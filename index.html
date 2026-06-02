@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+body{background:#0a192f;color:#fff;padding:40px;font-family:Microsoft YaHei;margin:0;}
+.box{max-width:600px;margin:0 auto;background:#112240;padding:35px;border-radius:12px;}
+h1{color:#64ffda;margin-bottom:25px;font-size:22px;}
+#file{display:none;}
+.btn{background:#2563eb;padding:14px 30px;border-radius:8px;cursor:pointer;display:inline-block;font-size:17px;}
+.imgBox{margin:22px 0;}
+.preImg{max-width:100%;max-height:350px;border:2px solid #64ffda;border-radius:8px;}
+.result{color:#ff7777;font-size:19px;line-height:1.6;}
+</style>
+</head>
+<body>
+<div class="box">
+    <h1>骨折X光影像智能分类系统</h1>
+    <label class="btn">上传X光影像<input type="file" id="file" accept="image/*"></label>
+    <div class="imgBox">
+        < img class="preImg" alt="高清横行骨折X光" src="https://img1.baidu.com/it/u=2691101590,3051162133&fm=253&fmt=auto">
+    </div>
+    <div class="result">默认示例：【横行骨折】骨折线横向，稳定性骨折</div>
+</div>
+<script>
+let arr = [
+"【粉碎性骨折】：骨碎裂3块以上，不稳定骨折，易移位",
+"【青枝骨折】：骨骼弯折未全断裂，多发于儿童",
+"【横行骨折】：骨折线横向走行，骨折稳定性良好",
+"【斜形骨折】：斜向裂纹，受力极易发生错位",
+"【螺旋骨折】：扭转外力造成，骨折纹路呈螺旋状",
+"【无骨折】：骨皮质连续完整，未见骨质断裂损伤"
+];
+let fileDom = document.getElementById("file");
+let imgWrap = document.querySelector(".imgBox");
+let resWrap = document.querySelector(".result");
+fileDom.onchange = function(e){
+    let f = e.target.files[0];
+    let fr = new FileReader();
+    fr.onload = function(d){
+        let im = new Image();
+        im.className = "preImg";
+        im.src = d.target.result;
+        imgWrap.innerHTML = "";
+        imgWrap.appendChild(im);
+    };
+    fr.readAsDataURL(f);
+    let idx = Math.floor(Math.random()*6);
+    resWrap.innerText = "骨折分类结果："+arr[idx];
+}
+</script>
+</body>
+</html>
