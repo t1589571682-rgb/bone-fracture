@@ -1,106 +1,267 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>骨折X光影像智能分类系统</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            background: #0a192f;
-            color: #fff;
-            font-family: "Microsoft YaHei", sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .container {
-            background: #112240;
-            border-radius: 12px;
-            padding: 35px;
-            width: 100%;
-            max-width: 600px;
-        }
-        h1 {
-            color: #64ffda;
-            text-align: center;
-            margin-bottom: 25px;
-            font-size: 22px;
-        }
-        .upload-btn {
-            background: #2563eb;
-            color: white;
-            border: none;
-            padding: 14px 30px;
-            border-radius: 8px;
-            cursor: pointer;
-            display: block;
-            margin: 0 auto 22px;
-            font-size: 17px;
-        }
-        .img-container {
-            width: 100%;
-            height: 350px;
-            border: 2px solid #64ffda;
-            border-radius: 8px;
-            background: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            margin-bottom: 22px;
-        }
-        #preview-img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            font-size: 0 !important;
-            color: transparent !important;
-        }
-        .result-text {
-            color: #ff7777;
-            font-size: 19px;
-            line-height: 1.6;
-        }
-        #file-input {
-            display: none;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bone Fracture AI Analysis</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Microsoft YaHei",sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+    padding:20px;
+}
+
+.header{
+    background:#1e88e5;
+    color:white;
+    padding:20px;
+    border-radius:12px;
+    margin-bottom:20px;
+}
+
+.header h1{
+    font-size:28px;
+}
+
+.main{
+    display:flex;
+    gap:20px;
+}
+
+.left{
+    flex:1.2;
+}
+
+.right{
+    flex:0.8;
+}
+
+.card{
+    background:white;
+    border-radius:15px;
+    padding:20px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    margin-bottom:20px;
+}
+
+.card h2{
+    margin-bottom:15px;
+    color:#1565c0;
+}
+
+.xray-image{
+    width:100%;
+    border-radius:12px;
+    border:1px solid #ddd;
+}
+
+.info-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.info-item{
+    background:#f8fafc;
+    padding:12px;
+    border-radius:10px;
+}
+
+.label{
+    font-size:12px;
+    color:#666;
+}
+
+.value{
+    font-weight:bold;
+    margin-top:5px;
+}
+
+.result{
+    margin-bottom:15px;
+}
+
+.result-title{
+    font-weight:bold;
+    color:#333;
+}
+
+.result-value{
+    color:#1e88e5;
+    margin-top:5px;
+}
+
+.risk-high{
+    color:#d32f2f;
+    font-weight:bold;
+}
+
+.risk-medium{
+    color:#f57c00;
+    font-weight:bold;
+}
+
+.risk-low{
+    color:#2e7d32;
+    font-weight:bold;
+}
+
+.progress{
+    width:100%;
+    height:12px;
+    background:#eee;
+    border-radius:10px;
+    overflow:hidden;
+    margin-top:10px;
+}
+
+.progress-bar{
+    width:92%;
+    height:100%;
+    background:#1e88e5;
+}
+
+.footer{
+    text-align:center;
+    color:#777;
+    margin-top:20px;
+}
+</style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>骨折X光影像智能分类系统</h1>
-        
-        <input type="file" id="file-input" accept="image/*">
-        <button class="upload-btn" onclick="document.getElementById('file-input').click()">上传X光影像</button>
 
-        <div class="img-container">
-            < img id="preview-img" src="./foot-fracture.jpg" alt="X光影像预览">
+<div class="header">
+    <h1>Bone Fracture AI Analysis System</h1>
+    <p>智能骨折检测与骨龄评估平台</p>
+</div>
+
+<div class="main">
+
+    <div class="left">
+
+        <div class="card">
+            <h2>X-Ray Image</h2>
+
+            <!-- 换成你的图片地址 -->
+            <img
+            src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b"
+            class="xray-image">
+
         </div>
 
-        <div class="result-text">
-            骨折分类结果：【粉碎性骨折】：骨碎裂3块以上，不稳定骨折，易移位
+        <div class="card">
+            <h2>Patient Information</h2>
+
+            <div class="info-grid">
+
+                <div class="info-item">
+                    <div class="label">Patient ID</div>
+                    <div class="value">BF-2026-001</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="label">Age</div>
+                    <div class="value">12 Years</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="label">Gender</div>
+                    <div class="value">Male</div>
+                </div>
+
+                <div class="info-item">
+                    <div class="label">Examination Date</div>
+                    <div class="value">2026-06-07</div>
+                </div>
+
+            </div>
         </div>
+
     </div>
 
-    <script>
-        document.getElementById('file-input').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('preview-img').src = e.target.result;
-                document.querySelector('.result-text').innerText = 
-                '骨折分类结果：【粉碎性骨折】：骨碎裂3块以上，不稳定骨折，易移位';
-            };
-            reader.readAsDataURL(file);
-        });
-    </script>
+    <div class="right">
+
+        <div class="card">
+            <h2>AI Diagnosis Report</h2>
+
+            <div class="result">
+                <div class="result-title">Detected Bone</div>
+                <div class="result-value">
+                    Distal Radius
+                </div>
+            </div>
+
+            <div class="result">
+                <div class="result-title">Fracture Detection</div>
+                <div class="result-value">
+                    Positive
+                </div>
+            </div>
+
+            <div class="result">
+                <div class="result-title">Confidence Score</div>
+
+                <div class="progress">
+                    <div class="progress-bar"></div>
+                </div>
+
+                <div class="result-value">
+                    92.4%
+                </div>
+            </div>
+
+            <div class="result">
+                <div class="result-title">Risk Level</div>
+                <div class="risk-high">
+                    HIGH
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Bone Age Analysis</h2>
+
+            <div class="result">
+                <div class="result-title">Estimated Bone Age</div>
+                <div class="result-value">
+                    11.8 Years
+                </div>
+            </div>
+
+            <div class="result">
+                <div class="result-title">Growth Status</div>
+                <div class="result-value">
+                    Normal Development
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Clinical Recommendation</h2>
+
+            <p>
+            AI检测到疑似桡骨远端骨折征象，
+            建议结合临床症状及放射科医师诊断。
+            必要时进一步进行CT或MRI检查，
+            并由骨科专科医师进行评估。
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="footer">
+    Powered by AI Bone Analysis System
+</div>
+
 </body>
 </html>
