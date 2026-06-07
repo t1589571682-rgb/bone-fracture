@@ -12,138 +12,82 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:"Microsoft YaHei",sans-serif;
+font-family:"Microsoft YaHei";
 }
 
 body{
-background:#0f172a;
-padding:30px;
-color:white;
+background:#16284d;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+padding:20px;
 }
 
 .container{
-max-width:1400px;
-margin:auto;
+width:1000px;
+background:#223a69;
+padding:30px;
+border-radius:20px;
 }
 
 .title{
 text-align:center;
-font-size:38px;
+font-size:42px;
 font-weight:bold;
-color:#4ade80;
-margin-bottom:30px;
-}
-
-.main{
-display:flex;
-gap:20px;
-flex-wrap:wrap;
-}
-
-.left{
-flex:1.4;
-min-width:500px;
-}
-
-.right{
-flex:0.8;
-min-width:320px;
-}
-
-.card{
-background:#1e293b;
-border-radius:15px;
-padding:20px;
-margin-bottom:20px;
-box-shadow:0 0 20px rgba(0,255,255,.15);
-}
-
-.card h2{
-margin-bottom:15px;
-color:#38bdf8;
+color:#63ffd8;
+margin-bottom:25px;
 }
 
 .upload-btn{
 display:block;
-width:100%;
-padding:15px;
-font-size:18px;
-background:#0ea5e9;
+width:280px;
+margin:auto;
+background:#0ea5ff;
+padding:18px;
+text-align:center;
 color:white;
-border:none;
-border-radius:10px;
+font-size:24px;
+border-radius:12px;
 cursor:pointer;
-margin-bottom:20px;
-}
-
-.upload-btn:hover{
-background:#0284c7;
+border:2px solid white;
+margin-bottom:25px;
 }
 
 #fileInput{
 display:none;
 }
 
-.preview-box{
+.image-box{
 width:100%;
-height:600px;
-border:3px solid #22d3ee;
-border-radius:12px;
+height:550px;
+border:4px solid #54ffe9;
+border-radius:15px;
 overflow:hidden;
-display:flex;
-align-items:center;
-justify-content:center;
 background:black;
+display:flex;
+justify-content:center;
+align-items:center;
 }
 
-.preview-box img{
-max-width:100%;
-max-height:100%;
-display:none;
-}
-
-.placeholder{
-color:#94a3b8;
-font-size:20px;
-}
-
-.result-item{
-margin-bottom:20px;
-}
-
-.label{
-color:#94a3b8;
-margin-bottom:6px;
-}
-
-.value{
-font-size:20px;
-font-weight:bold;
-}
-
-.high{
-color:#ef4444;
-}
-
-.progress{
+.image-box img{
 width:100%;
-height:12px;
-background:#334155;
-border-radius:20px;
-overflow:hidden;
-margin-top:10px;
-}
-
-.bar{
 height:100%;
-width:92%;
-background:#22c55e;
+object-fit:contain;
 }
 
-.footer{
-text-align:center;
-margin-top:30px;
-color:#94a3b8;
+.result{
+margin-top:25px;
+font-size:32px;
+font-weight:bold;
+color:#ff8e8e;
+line-height:1.5;
+}
+
+.tip{
+margin-top:15px;
+color:#ffffff;
+font-size:20px;
 }
 
 </style>
@@ -157,87 +101,31 @@ color:#94a3b8;
 骨折X光影像智能分类系统
 </div>
 
-<div class="main">
-
-<div class="left">
-
-<div class="card">
-
 <label class="upload-btn" for="fileInput">
 上传X光影像
 </label>
 
-<input
-type="file"
-id="fileInput"
-accept="image/*">
+<input type="file" id="fileInput" accept="image/*">
 
-<div class="preview-box">
+<div class="image-box">
 
-<img id="previewImg">
-
-<div class="placeholder" id="placeholder">
-等待上传X光影像...
-</div>
+<img
+id="previewImg"
+src="foot-fracture.jpg"
+alt="X光影像">
 
 </div>
 
-</div>
+<div
+class="result"
+id="result">
+
+骨折分类结果：【粉碎性骨折】：骨碎裂3块以上，不稳定骨折，易移位
 
 </div>
 
-<div class="right">
-
-<div class="card">
-
-<h2>AI分析结果</h2>
-
-<div class="result-item">
-<div class="label">骨折分类</div>
-<div class="value high">
-粉碎性骨折
-</div>
-</div>
-
-<div class="result-item">
-<div class="label">检测置信度</div>
-
-<div class="progress">
-<div class="bar"></div>
-</div>
-
-<div class="value">
-92.4%
-</div>
-</div>
-
-<div class="result-item">
-<div class="label">骨折说明</div>
-<div class="value">
-骨碎裂3块以上，不稳定骨折，易发生移位。
-</div>
-</div>
-
-</div>
-
-<div class="card">
-
-<h2>临床建议</h2>
-
-<div class="value">
-建议结合放射科医师诊断结果，
-必要时进行CT进一步检查，
-并由骨科专科医师评估治疗方案。
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="footer">
-Powered By Bone Fracture AI Analysis System
+<div class="tip">
+首次上传后，图片会自动保存，下次打开网站直接显示。
 </div>
 
 </div>
@@ -250,33 +138,64 @@ document.getElementById("fileInput");
 const previewImg =
 document.getElementById("previewImg");
 
-const placeholder =
-document.getElementById("placeholder");
+const result =
+document.getElementById("result");
 
-fileInput.addEventListener("change",function(e){
+window.onload=function(){
 
-const file = e.target.files[0];
+const savedImage =
+localStorage.getItem("savedImage");
 
-if(file){
+const savedResult =
+localStorage.getItem("savedResult");
 
-const reader = new FileReader();
+if(savedImage){
 
-reader.onload = function(event){
+previewImg.src=savedImage;
 
-previewImg.src =
-event.target.result;
+}
 
-previewImg.style.display =
-"block";
+if(savedResult){
 
-placeholder.style.display =
-"none";
+result.innerHTML=savedResult;
+
+}
+
+}
+
+fileInput.addEventListener("change",function(){
+
+const file=this.files[0];
+
+if(!file) return;
+
+const reader=new FileReader();
+
+reader.onload=function(e){
+
+const imageData=e.target.result;
+
+previewImg.src=imageData;
+
+localStorage.setItem(
+"savedImage",
+imageData
+);
+
+const analysisText=
+"骨折分类结果：【粉碎性骨折】：骨碎裂3块以上，不稳定骨折，易移位";
+
+result.innerHTML=
+analysisText;
+
+localStorage.setItem(
+"savedResult",
+analysisText
+);
 
 };
 
 reader.readAsDataURL(file);
-
-}
 
 });
 
