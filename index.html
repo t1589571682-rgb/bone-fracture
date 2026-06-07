@@ -21,23 +21,23 @@ min-height:100vh;
 }
 
 .container{
-max-width:1400px;
+max-width:1600px;
 margin:auto;
 }
 
 .title{
 text-align:center;
-font-size:56px;
+font-size:52px;
 font-weight:bold;
-color:#66ff99;
-margin-bottom:25px;
+color:#67ff9d;
+margin-bottom:30px;
 }
 
 .upload-btn{
 display:block;
-width:280px;
+width:260px;
 margin:0 auto 25px auto;
-background:#00bfff;
+background:#1495ff;
 color:white;
 text-align:center;
 padding:18px;
@@ -54,14 +54,15 @@ display:none;
 .main{
 display:flex;
 gap:20px;
+align-items:stretch;
 }
 
 .left{
-flex:2;
+flex:7;
 }
 
 .right{
-flex:1;
+flex:3;
 display:flex;
 flex-direction:column;
 gap:20px;
@@ -70,7 +71,7 @@ gap:20px;
 .image-box{
 height:700px;
 background:black;
-border:4px solid #54ffe9;
+border:4px solid #4fffe7;
 border-radius:18px;
 overflow:hidden;
 display:flex;
@@ -88,36 +89,35 @@ display:none;
 
 .placeholder{
 color:white;
-font-size:42px;
+font-size:38px;
 }
 
 .card{
-background:rgba(255,255,255,0.08);
+background:rgba(255,255,255,.08);
 padding:25px;
 border-radius:18px;
-backdrop-filter:blur(8px);
 }
 
 .card h2{
-color:#38d9ff;
-font-size:40px;
+color:#35d8ff;
+font-size:34px;
 margin-bottom:20px;
 }
 
-.info{
+.label{
+font-size:22px;
 color:white;
-font-size:26px;
-line-height:1.8;
+margin-bottom:10px;
 }
 
 .fracture{
-color:#ff5f5f;
-font-size:42px;
+font-size:40px;
 font-weight:bold;
+color:#ff6565;
+margin-bottom:20px;
 }
 
 .progress{
-width:100%;
 height:18px;
 background:#333;
 border-radius:20px;
@@ -126,48 +126,26 @@ margin:10px 0;
 }
 
 .progress-bar{
-width:92.4%;
 height:100%;
-background:#4cff61;
+width:92.4%;
+background:#44ff66;
 }
 
 .percent{
+font-size:28px;
 color:white;
-font-size:32px;
 font-weight:bold;
 }
 
-@media(max-width:1000px){
-
-.main{
-flex-direction:column;
-}
-
-.image-box{
-height:450px;
-}
-
-.title{
-font-size:34px;
-}
-
-.card h2{
-font-size:28px;
-}
-
-.info{
-font-size:18px;
-}
-
-.fracture{
-font-size:28px;
-}
-
+.text{
+font-size:22px;
+color:white;
+line-height:1.8;
 }
 
 </style>
-</head>
 
+</head>
 <body>
 
 <div class="container">
@@ -198,7 +176,9 @@ alt="X光影像">
 <div
 id="placeholder"
 class="placeholder">
+
 等待上传X光影像...
+
 </div>
 
 </div>
@@ -211,7 +191,7 @@ class="placeholder">
 
 <h2>AI分析结果</h2>
 
-<div class="info">
+<div class="label">
 骨折分类
 </div>
 
@@ -219,9 +199,7 @@ class="placeholder">
 粉碎性骨折
 </div>
 
-<br>
-
-<div class="info">
+<div class="label">
 检测置信度
 </div>
 
@@ -235,11 +213,11 @@ class="placeholder">
 
 <br>
 
-<div class="info">
+<div class="label">
 骨折说明
 </div>
 
-<div class="info">
+<div class="text">
 骨碎裂3块以上，不稳定骨折，
 易发生移位。
 </div>
@@ -250,7 +228,7 @@ class="placeholder">
 
 <h2>临床建议</h2>
 
-<div class="info">
+<div class="text">
 建议结合放射科医师诊断结果，
 必要时进行CT进一步检查，
 并由骨科专科医师评估治疗方案。
@@ -302,9 +280,7 @@ const reader=new FileReader();
 
 reader.onload=function(e){
 
-const imageData=e.target.result;
-
-previewImg.src=imageData;
+previewImg.src=e.target.result;
 
 previewImg.style.display="block";
 
@@ -312,7 +288,7 @@ placeholder.style.display="none";
 
 localStorage.setItem(
 "savedImage",
-imageData
+e.target.result
 );
 
 };
