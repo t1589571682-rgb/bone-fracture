@@ -11,9 +11,9 @@
         .btn{background:#2563eb;padding:14px 30px;border-radius:8px;cursor:pointer;display:inline-block;font-size:17px;}
         .imgBox{margin:22px 0;}
         .preImg{max-width:100%;max-height:350px;border:2px solid #64ffda;border-radius:8px;
-            /* 关键修复：禁止img标签显示文本 */
             font-size:0 !important;
             color:transparent !important;
+            background:#000;
         }
         .result{color:#ff7777;font-size:19px;line-height:1.6;}
     </style>
@@ -25,7 +25,9 @@
         <input type="file" id="file" accept="image/*">
     </label>
     <div class="imgBox">
-        < img class="preImg" id="preview-img" alt="X光影像预览">
+        < img class="preImg" id="preview-img" 
+             alt="X光影像预览"
+             src="https://img1.baidu.com/it/u=2691101590,3051162133&fm=253&fmt=auto">
     </div>
     <div class="result" id="result-text">骨折分类结果：【粉碎性骨折】：骨碎裂3块以上，不稳定骨折，易移位</div>
 </div>
@@ -38,9 +40,7 @@
 
         const reader = new FileReader();
         reader.onload = function(e) {
-            // 显示上传的图片
             document.getElementById('preview-img').src = e.target.result;
-            // 显示固定的粉碎性骨折结果
             document.getElementById('result-text').innerText = '骨折分类结果：【粉碎性骨折】：骨碎裂3块以上，不稳定骨折，易移位';
         };
         reader.readAsDataURL(file);
