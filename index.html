@@ -1,167 +1,14 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>骨折X光影像智能分类系统</title>
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:"Microsoft YaHei",sans-serif;
-}
-
-body{
-background:#16284d;
-padding:20px;
-min-height:100vh;
-}
-
-.container{
-max-width:1600px;
-margin:auto;
-}
-
-.title{
-text-align:center;
-font-size:52px;
-font-weight:bold;
-color:#67ff9d;
-margin-bottom:30px;
-}
-
-.upload-btn{
-display:block;
-width:260px;
-margin:0 auto 25px auto;
-background:#1495ff;
-color:white;
-text-align:center;
-padding:18px;
-font-size:24px;
-border-radius:12px;
-cursor:pointer;
-border:2px solid white;
-}
-
-#fileInput{
-display:none;
-}
-
-.main{
-display:flex;
-gap:20px;
-align-items:stretch;
-}
-
-.left{
-flex:7;
-}
-
-.right{
-flex:3;
-display:flex;
-flex-direction:column;
-gap:20px;
-}
-
-.image-box{
-height:700px;
-background:black;
-border:4px solid #4fffe7;
-border-radius:18px;
-overflow:hidden;
-display:flex;
-justify-content:center;
-align-items:center;
-position:relative;
-}
-
-.image-box img{
-width:100%;
-height:100%;
-object-fit:contain;
-display:none;
-}
-
-.placeholder{
-color:white;
-font-size:38px;
-}
-
-.card{
-background:rgba(255,255,255,.08);
-padding:25px;
-border-radius:18px;
-}
-
-.card h2{
-color:#35d8ff;
-font-size:34px;
-margin-bottom:20px;
-}
-
-.label{
-font-size:22px;
-color:white;
-margin-bottom:10px;
-}
-
-.fracture{
-font-size:40px;
-font-weight:bold;
-color:#ff6565;
-margin-bottom:20px;
-}
-
-.progress{
-height:18px;
-background:#333;
-border-radius:20px;
-overflow:hidden;
-margin:10px 0;
-}
-
-.progress-bar{
-height:100%;
-width:92.4%;
-background:#44ff66;
-}
-
-.percent{
-font-size:28px;
-color:white;
-font-weight:bold;
-}
-
-.text{
-font-size:22px;
-color:white;
-line-height:1.8;
-}
-
-</style>
-
-</head>
-<body>
-
-<div class="container">
-
 <div class="title">
+골절 X-Ray 영상 지능형 분류 시스템
+<br>
 骨折X光影像智能分类系统
 </div>
 
 <label class="upload-btn" for="fileInput">
+X-Ray 영상 업로드
+<br>
 上传X光影像
 </label>
-
-<input
-type="file"
-id="fileInput"
-accept="image/*">
 
 <div class="main">
 
@@ -177,6 +24,8 @@ alt="X光影像">
 id="placeholder"
 class="placeholder">
 
+X-Ray 영상을 업로드해 주세요...
+<br>
 等待上传X光影像...
 
 </div>
@@ -189,17 +38,27 @@ class="placeholder">
 
 <div class="card">
 
-<h2>AI分析结果</h2>
+<h2>
+AI 분석 결과
+<br>
+AI分析结果
+</h2>
 
 <div class="label">
+골절 분류
+<br>
 骨折分类
 </div>
 
 <div class="fracture">
+분쇄 골절
+<br>
 粉碎性骨折
 </div>
 
 <div class="label">
+예측 신뢰도
+<br>
 检测置信度
 </div>
 
@@ -214,10 +73,17 @@ class="placeholder">
 <br>
 
 <div class="label">
+골절 설명
+<br>
 骨折说明
 </div>
 
 <div class="text">
+3개 이상의 골편으로 분리된 불안정 골절이며,
+전위 위험이 높습니다.
+
+<br><br>
+
 骨碎裂3块以上，不稳定骨折，
 易发生移位。
 </div>
@@ -226,9 +92,18 @@ class="placeholder">
 
 <div class="card">
 
-<h2>临床建议</h2>
+<h2>
+임상 권고
+<br>
+临床建议
+</h2>
 
 <div class="text">
+영상의학과 전문의의 진단과 함께
+필요 시 CT 또는 MRI 추가 검사를 권장합니다.
+
+<br><br>
+
 建议结合放射科医师诊断结果，
 必要时进行CT进一步检查，
 并由骨科专科医师评估治疗方案。
@@ -239,65 +114,3 @@ class="placeholder">
 </div>
 
 </div>
-
-</div>
-
-<script>
-
-const fileInput =
-document.getElementById("fileInput");
-
-const previewImg =
-document.getElementById("previewImg");
-
-const placeholder =
-document.getElementById("placeholder");
-
-window.onload=function(){
-
-const savedImage =
-localStorage.getItem("savedImage");
-
-if(savedImage){
-
-previewImg.src=savedImage;
-
-previewImg.style.display="block";
-
-placeholder.style.display="none";
-
-}
-
-}
-
-fileInput.addEventListener("change",function(){
-
-const file=this.files[0];
-
-if(!file) return;
-
-const reader=new FileReader();
-
-reader.onload=function(e){
-
-previewImg.src=e.target.result;
-
-previewImg.style.display="block";
-
-placeholder.style.display="none";
-
-localStorage.setItem(
-"savedImage",
-e.target.result
-);
-
-};
-
-reader.readAsDataURL(file);
-
-});
-
-</script>
-
-</body>
-</html>
