@@ -1,267 +1,287 @@
+```html
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bone Fracture AI Analysis</title>
+<title>骨折X光影像智能分类系统</title>
 
 <style>
+
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:"Microsoft YaHei",sans-serif;
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:"Microsoft YaHei",sans-serif;
 }
 
 body{
-    background:#f4f7fb;
-    padding:20px;
+background:#0f172a;
+padding:30px;
+color:white;
 }
 
-.header{
-    background:#1e88e5;
-    color:white;
-    padding:20px;
-    border-radius:12px;
-    margin-bottom:20px;
+.container{
+max-width:1400px;
+margin:auto;
 }
 
-.header h1{
-    font-size:28px;
+.title{
+text-align:center;
+font-size:38px;
+font-weight:bold;
+color:#4ade80;
+margin-bottom:30px;
 }
 
 .main{
-    display:flex;
-    gap:20px;
+display:flex;
+gap:20px;
+flex-wrap:wrap;
 }
 
 .left{
-    flex:1.2;
+flex:1.4;
+min-width:500px;
 }
 
 .right{
-    flex:0.8;
+flex:0.8;
+min-width:320px;
 }
 
 .card{
-    background:white;
-    border-radius:15px;
-    padding:20px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.08);
-    margin-bottom:20px;
+background:#1e293b;
+border-radius:15px;
+padding:20px;
+margin-bottom:20px;
+box-shadow:0 0 20px rgba(0,255,255,.15);
 }
 
 .card h2{
-    margin-bottom:15px;
-    color:#1565c0;
+margin-bottom:15px;
+color:#38bdf8;
 }
 
-.xray-image{
-    width:100%;
-    border-radius:12px;
-    border:1px solid #ddd;
+.upload-btn{
+display:block;
+width:100%;
+padding:15px;
+font-size:18px;
+background:#0ea5e9;
+color:white;
+border:none;
+border-radius:10px;
+cursor:pointer;
+margin-bottom:20px;
 }
 
-.info-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
+.upload-btn:hover{
+background:#0284c7;
 }
 
-.info-item{
-    background:#f8fafc;
-    padding:12px;
-    border-radius:10px;
+#fileInput{
+display:none;
+}
+
+.preview-box{
+width:100%;
+height:600px;
+border:3px solid #22d3ee;
+border-radius:12px;
+overflow:hidden;
+display:flex;
+align-items:center;
+justify-content:center;
+background:black;
+}
+
+.preview-box img{
+max-width:100%;
+max-height:100%;
+display:none;
+}
+
+.placeholder{
+color:#94a3b8;
+font-size:20px;
+}
+
+.result-item{
+margin-bottom:20px;
 }
 
 .label{
-    font-size:12px;
-    color:#666;
+color:#94a3b8;
+margin-bottom:6px;
 }
 
 .value{
-    font-weight:bold;
-    margin-top:5px;
+font-size:20px;
+font-weight:bold;
 }
 
-.result{
-    margin-bottom:15px;
-}
-
-.result-title{
-    font-weight:bold;
-    color:#333;
-}
-
-.result-value{
-    color:#1e88e5;
-    margin-top:5px;
-}
-
-.risk-high{
-    color:#d32f2f;
-    font-weight:bold;
-}
-
-.risk-medium{
-    color:#f57c00;
-    font-weight:bold;
-}
-
-.risk-low{
-    color:#2e7d32;
-    font-weight:bold;
+.high{
+color:#ef4444;
 }
 
 .progress{
-    width:100%;
-    height:12px;
-    background:#eee;
-    border-radius:10px;
-    overflow:hidden;
-    margin-top:10px;
+width:100%;
+height:12px;
+background:#334155;
+border-radius:20px;
+overflow:hidden;
+margin-top:10px;
 }
 
-.progress-bar{
-    width:92%;
-    height:100%;
-    background:#1e88e5;
+.bar{
+height:100%;
+width:92%;
+background:#22c55e;
 }
 
 .footer{
-    text-align:center;
-    color:#777;
-    margin-top:20px;
+text-align:center;
+margin-top:30px;
+color:#94a3b8;
 }
+
 </style>
 </head>
 
 <body>
 
-<div class="header">
-    <h1>Bone Fracture AI Analysis System</h1>
-    <p>智能骨折检测与骨龄评估平台</p>
+<div class="container">
+
+<div class="title">
+骨折X光影像智能分类系统
 </div>
 
 <div class="main">
 
-    <div class="left">
+<div class="left">
 
-        <div class="card">
-            <h2>X-Ray Image</h2>
+<div class="card">
 
-            <!-- 换成你的图片地址 -->
-            <img
-            src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b"
-            class="xray-image">
+<label class="upload-btn" for="fileInput">
+上传X光影像
+</label>
 
-        </div>
+<input
+type="file"
+id="fileInput"
+accept="image/*">
 
-        <div class="card">
-            <h2>Patient Information</h2>
+<div class="preview-box">
 
-            <div class="info-grid">
+<img id="previewImg">
 
-                <div class="info-item">
-                    <div class="label">Patient ID</div>
-                    <div class="value">BF-2026-001</div>
-                </div>
+<div class="placeholder" id="placeholder">
+等待上传X光影像...
+</div>
 
-                <div class="info-item">
-                    <div class="label">Age</div>
-                    <div class="value">12 Years</div>
-                </div>
+</div>
 
-                <div class="info-item">
-                    <div class="label">Gender</div>
-                    <div class="value">Male</div>
-                </div>
+</div>
 
-                <div class="info-item">
-                    <div class="label">Examination Date</div>
-                    <div class="value">2026-06-07</div>
-                </div>
+</div>
 
-            </div>
-        </div>
+<div class="right">
 
-    </div>
+<div class="card">
 
-    <div class="right">
+<h2>AI分析结果</h2>
 
-        <div class="card">
-            <h2>AI Diagnosis Report</h2>
+<div class="result-item">
+<div class="label">骨折分类</div>
+<div class="value high">
+粉碎性骨折
+</div>
+</div>
 
-            <div class="result">
-                <div class="result-title">Detected Bone</div>
-                <div class="result-value">
-                    Distal Radius
-                </div>
-            </div>
+<div class="result-item">
+<div class="label">检测置信度</div>
 
-            <div class="result">
-                <div class="result-title">Fracture Detection</div>
-                <div class="result-value">
-                    Positive
-                </div>
-            </div>
+<div class="progress">
+<div class="bar"></div>
+</div>
 
-            <div class="result">
-                <div class="result-title">Confidence Score</div>
+<div class="value">
+92.4%
+</div>
+</div>
 
-                <div class="progress">
-                    <div class="progress-bar"></div>
-                </div>
+<div class="result-item">
+<div class="label">骨折说明</div>
+<div class="value">
+骨碎裂3块以上，不稳定骨折，易发生移位。
+</div>
+</div>
 
-                <div class="result-value">
-                    92.4%
-                </div>
-            </div>
+</div>
 
-            <div class="result">
-                <div class="result-title">Risk Level</div>
-                <div class="risk-high">
-                    HIGH
-                </div>
-            </div>
-        </div>
+<div class="card">
 
-        <div class="card">
-            <h2>Bone Age Analysis</h2>
+<h2>临床建议</h2>
 
-            <div class="result">
-                <div class="result-title">Estimated Bone Age</div>
-                <div class="result-value">
-                    11.8 Years
-                </div>
-            </div>
+<div class="value">
+建议结合放射科医师诊断结果，
+必要时进行CT进一步检查，
+并由骨科专科医师评估治疗方案。
+</div>
 
-            <div class="result">
-                <div class="result-title">Growth Status</div>
-                <div class="result-value">
-                    Normal Development
-                </div>
-            </div>
-        </div>
+</div>
 
-        <div class="card">
-            <h2>Clinical Recommendation</h2>
-
-            <p>
-            AI检测到疑似桡骨远端骨折征象，
-            建议结合临床症状及放射科医师诊断。
-            必要时进一步进行CT或MRI检查，
-            并由骨科专科医师进行评估。
-            </p>
-        </div>
-
-    </div>
+</div>
 
 </div>
 
 <div class="footer">
-    Powered by AI Bone Analysis System
+Powered By Bone Fracture AI Analysis System
 </div>
+
+</div>
+
+<script>
+
+const fileInput =
+document.getElementById("fileInput");
+
+const previewImg =
+document.getElementById("previewImg");
+
+const placeholder =
+document.getElementById("placeholder");
+
+fileInput.addEventListener("change",function(e){
+
+const file = e.target.files[0];
+
+if(file){
+
+const reader = new FileReader();
+
+reader.onload = function(event){
+
+previewImg.src =
+event.target.result;
+
+previewImg.style.display =
+"block";
+
+placeholder.style.display =
+"none";
+
+};
+
+reader.readAsDataURL(file);
+
+}
+
+});
+
+</script>
 
 </body>
 </html>
+```
