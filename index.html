@@ -60,7 +60,6 @@
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
-            /* 强制禁止显示文本内容，解决标签乱码问题 */
             font-size: 0 !important;
             color: transparent !important;
         }
@@ -82,10 +81,7 @@
         <button class="upload-btn" onclick="document.getElementById('file-input').click()">上传X光影像</button>
 
         <div class="img-container">
-            <!-- 这里用你已经上传的foot-fracture.jpg，路径完全正确 -->
-            < img id="preview-img" 
-                 src="./foot-fracture.jpg" 
-                 alt="X光影像预览">
+            < img id="preview-img" src="./foot-fracture.jpg" alt="X光影像预览">
         </div>
 
         <div class="result-text">
@@ -94,16 +90,14 @@
     </div>
 
     <script>
-        // 上传图片逻辑（不影响默认显示）
         document.getElementById('file-input').addEventListener('change', function(event) {
             const file = event.target.files[0];
             if (!file) return;
-
             const reader = new FileReader();
             reader.onload = function(e) {
                 document.getElementById('preview-img').src = e.target.result;
                 document.querySelector('.result-text').innerText = 
-                    '骨折分类结果：【粉碎性骨折】：骨碎裂3块以上，不稳定骨折，易移位';
+                '骨折分类结果：【粉碎性骨折】：骨碎裂3块以上，不稳定骨折，易移位';
             };
             reader.readAsDataURL(file);
         });
