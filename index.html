@@ -1,10 +1,20 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
-<title>骨影智析 AI V5.0</title>
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+
+骨影智析 AI
+골 영상 AI 분석 시스템
+
+</title>
 
 <style>
 
@@ -12,66 +22,59 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:"Microsoft YaHei",Arial,sans-serif;
+font-family:
+"Microsoft YaHei",
+sans-serif;
 }
 
 body{
 background:#0f172a;
-color:#fff;
+color:white;
 min-height:100vh;
 }
 
 header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:20px 30px;
 background:#111827;
-border-bottom:1px solid #334155;
-position:sticky;
-top:0;
-z-index:999;
+padding:20px;
+border-bottom:
+1px solid #334155;
 }
 
 .logo{
-font-size:28px;
+font-size:30px;
 font-weight:bold;
 color:#60a5fa;
+text-align:center;
 }
 
-nav a{
+.logo-sub{
+font-size:15px;
 color:#cbd5e1;
-text-decoration:none;
-margin-left:20px;
-}
-
-nav a:hover{
-color:#60a5fa;
+margin-top:8px;
 }
 
 .container{
 max-width:1400px;
 margin:auto;
-display:grid;
-grid-template-columns:2fr 1fr;
-gap:20px;
 padding:20px;
+display:grid;
+grid-template-columns:
+2fr 1fr;
+gap:20px;
 }
 
 .card{
 background:#1e293b;
 padding:20px;
 border-radius:15px;
-box-shadow:0 4px 10px rgba(0,0,0,.2);
 }
 
 .welcome-box{
-text-align:center;
-padding:30px;
 background:#111827;
+padding:30px;
 border-radius:15px;
 margin-bottom:20px;
-border:1px solid #334155;
+text-align:center;
 }
 
 .welcome-box h1{
@@ -80,23 +83,20 @@ margin-bottom:10px;
 }
 
 .welcome-box h3{
-color:#cbd5e1;
 font-weight:normal;
-margin-bottom:15px;
+color:#cbd5e1;
+margin-bottom:20px;
 }
 
 .student-info{
-font-size:20px;
-font-weight:bold;
+font-size:22px;
 color:#22c55e;
 line-height:1.8;
+font-weight:bold;
 }
 
-.card h2{
+h2{
 margin-bottom:20px;
-display:flex;
-align-items:center;
-gap:10px;
 }
 
 .status{
@@ -107,15 +107,12 @@ font-size:12px;
 }
 
 .upload-box{
-border:2px dashed #475569;
+border:
+2px dashed #475569;
 padding:40px;
-border-radius:15px;
 text-align:center;
+border-radius:15px;
 cursor:pointer;
-}
-
-.upload-box:hover{
-border-color:#3b82f6;
 }
 
 #fileInput{
@@ -127,13 +124,13 @@ width:100%;
 max-height:550px;
 object-fit:contain;
 margin-top:20px;
-border-radius:10px;
 display:none;
+border-radius:10px;
 }
 
 button{
 background:#2563eb;
-color:#fff;
+color:white;
 border:none;
 padding:12px 20px;
 border-radius:10px;
@@ -141,17 +138,9 @@ cursor:pointer;
 margin-top:15px;
 }
 
-button:hover{
-background:#1d4ed8;
-}
-
 .reset-btn{
 background:#dc2626;
 margin-left:10px;
-}
-
-.reset-btn:hover{
-background:#b91c1c;
 }
 
 .result-item{
@@ -161,33 +150,20 @@ border-radius:10px;
 margin-bottom:10px;
 }
 
-.progress{
-height:20px;
-background:#334155;
-border-radius:10px;
-overflow:hidden;
-margin-top:10px;
-}
-
-.progress-bar{
-height:100%;
-background:#22c55e;
-width:0%;
-}
-
 .login-box input{
 width:100%;
 padding:10px;
 margin-top:10px;
 background:#0f172a;
-border:1px solid #334155;
+border:
+1px solid #334155;
 color:white;
 border-radius:8px;
 }
 
 .history-item{
-padding:10px;
 background:#0f172a;
+padding:10px;
 border-radius:10px;
 margin-bottom:10px;
 }
@@ -198,20 +174,10 @@ padding:20px;
 color:#94a3b8;
 }
 
-.loading{
-font-size:18px;
-color:#60a5fa;
-}
-
 @media(max-width:900px){
 
 .container{
 grid-template-columns:1fr;
-}
-
-header{
-flex-direction:column;
-gap:10px;
 }
 
 }
@@ -225,18 +191,16 @@ gap:10px;
 <header>
 
 <div class="logo">
+
 🦴 骨影智析 AI
+
+<div class="logo-sub">
+
+골 영상 AI 분석 시스템
+
 </div>
 
-<nav>
-
-<a href="#">首页</a>
-<a href="#">AI分析</a>
-<a href="#">病例库</a>
-<a href="#">报告中心</a>
-<a href="#">用户中心</a>
-
-</nav>
+</div>
 
 </header>
 
@@ -247,16 +211,36 @@ gap:10px;
 <div class="welcome-box">
 
 <h1>
-欢迎使用骨影智析 AI
+
+欢迎使用骨影智析AI
+
+<br>
+
+골 영상 AI 분석 시스템에 오신 것을 환영합니다
+
 </h1>
 
 <h3>
-골 영상 AI 분석 시스템
+
+医学影像智能分析平台
+
+<br>
+
+의료 영상 지능형 분석 플랫폼
+
 </h3>
 
 <div class="student-info">
 
+姓名 / 이름
+
+<br>
+
 전시옥
+
+<br><br>
+
+学号 / 학번
 
 <br>
 
@@ -272,8 +256,14 @@ gap:10px;
 
 X光影像分析
 
+<br>
+
+X선 영상 분석
+
 <span class="status">
+
 AI在线
+
 </span>
 
 </h2>
@@ -288,7 +278,13 @@ id="fileInput"
 accept="image/*">
 
 <p>
+
 点击上传X光影像
+
+<br>
+
+X선 영상을 업로드하세요
+
 </p>
 
 <img id="preview">
@@ -296,13 +292,25 @@ accept="image/*">
 <br>
 
 <button id="analyzeBtn">
+
 开始分析
+
+<br>
+
+분석 시작
+
 </button>
 
 <button
 id="resetBtn"
 class="reset-btn">
+
 重置图片
+
+<br>
+
+이미지 초기화
+
 </button>
 
 </div>
@@ -316,12 +324,22 @@ class="reset-btn">
 <div class="card">
 
 <h2>
+
 分析结果
+
+<br>
+
+분석 결과
+
 </h2>
 
 <div id="result">
 
-等待上传影像...
+等待上传影像
+
+<br>
+
+영상 업로드 대기중
 
 </div>
 
@@ -330,7 +348,13 @@ class="card"
 style="margin-top:20px">
 
 <h2>
+
 用户登录
+
+<br>
+
+사용자 로그인
+
 </h2>
 
 <div class="login-box">
@@ -338,15 +362,21 @@ style="margin-top:20px">
 <input
 type="text"
 id="username"
-placeholder="用户名">
+placeholder="用户名 / 사용자명">
 
 <input
 type="password"
 id="password"
-placeholder="密码">
+placeholder="密码 / 비밀번호">
 
 <button id="loginBtn">
+
 登录
+
+<br>
+
+로그인
+
 </button>
 
 </div>
@@ -358,21 +388,45 @@ class="card"
 style="margin-top:20px">
 
 <h2>
+
 历史记录
+
+<br>
+
+기록 내역
+
 </h2>
 
 <div id="historyList">
 
 <div class="history-item">
+
 左手腕X光
+
+<br>
+
+왼쪽 손목 X선
+
 </div>
 
 <div class="history-item">
+
 右膝关节X光
+
+<br>
+
+오른쪽 무릎 X선
+
 </div>
 
 <div class="history-item">
+
 胸部X光
+
+<br>
+
+흉부 X선
+
 </div>
 
 </div>
@@ -389,88 +443,61 @@ Bone Vision AI V5.0
 
 <br>
 
-전시옥 | 202217019
+골 영상 AI 분석 시스템
+
+<br><br>
+
+전시옥
+
+<br>
+
+202217019
 
 </footer>
 
 <script>
 
-const IMAGE_KEY =
-"bone_ai_image";
+const IMAGE_KEY="bone_ai_image";
+const RESULT_KEY="bone_ai_result";
+const HISTORY_KEY="bone_ai_history";
 
-const RESULT_KEY =
-"bone_ai_result";
+const fileInput=document.getElementById("fileInput");
+const uploadArea=document.getElementById("uploadArea");
+const preview=document.getElementById("preview");
+const analyzeBtn=document.getElementById("analyzeBtn");
+const resetBtn=document.getElementById("resetBtn");
+const result=document.getElementById("result");
 
-const HISTORY_KEY =
-"bone_ai_history";
-
-const fileInput =
-document.getElementById(
-"fileInput"
-);
-
-const uploadArea =
-document.getElementById(
-"uploadArea"
-);
-
-const preview =
-document.getElementById(
-"preview"
-);
-
-const analyzeBtn =
-document.getElementById(
-"analyzeBtn"
-);
-
-const resetBtn =
-document.getElementById(
-"resetBtn"
-);
-
-const result =
-document.getElementById(
-"result"
-);
-
-let currentImage = null;
+let currentImage=null;
 
 window.addEventListener(
 "DOMContentLoaded",
 function(){
 
-const savedImage =
+const savedImage=
 localStorage.getItem(
 IMAGE_KEY
 );
 
-const savedResult =
+const savedResult=
 localStorage.getItem(
 RESULT_KEY
 );
 
 if(savedImage){
 
-preview.src =
-savedImage;
-
-preview.style.display =
-"block";
-
-currentImage =
-savedImage;
+preview.src=savedImage;
+preview.style.display="block";
+currentImage=savedImage;
 
 }
 
 if(savedResult){
 
-result.innerHTML =
+result.innerHTML=
 savedResult;
 
 }
-
-loadHistory();
 
 }
 );
@@ -480,8 +507,7 @@ uploadArea.addEventListener(
 function(e){
 
 if(
-e.target.tagName ===
-"BUTTON"
+e.target.tagName==="BUTTON"
 ){
 return;
 }
@@ -495,27 +521,26 @@ fileInput.addEventListener(
 "change",
 function(e){
 
-const file =
-e.target.files[0];
+const file=e.target.files[0];
 
 if(!file) return;
 
-const reader =
+const reader=
 new FileReader();
 
-reader.onload =
+reader.onload=
 function(event){
 
-const base64 =
+const base64=
 event.target.result;
 
-preview.src =
+preview.src=
 base64;
 
-preview.style.display =
+preview.style.display=
 "block";
 
-currentImage =
+currentImage=
 base64;
 
 localStorage.setItem(
@@ -523,12 +548,18 @@ IMAGE_KEY,
 base64
 );
 
-result.innerHTML = `
+result.innerHTML=`
+
 <div class="result-item">
+
 图片上传成功
+
 <br>
-点击开始分析
+
+이미지 업로드 성공
+
 </div>
+
 `;
 
 };
@@ -540,41 +571,6 @@ file
 }
 );
 
-function loadHistory(){
-
-const history =
-JSON.parse(
-localStorage.getItem(
-HISTORY_KEY
-) || "[]"
-);
-
-const historyList =
-document.getElementById(
-"historyList"
-);
-
-history.forEach(item=>{
-
-const div =
-document.createElement(
-"div"
-);
-
-div.className =
-"history-item";
-
-div.innerText =
-item;
-
-historyList.prepend(
-div
-);
-
-});
-
-}
-
 analyzeBtn.addEventListener(
 "click",
 function(){
@@ -582,118 +578,119 @@ function(){
 if(!currentImage){
 
 alert(
-"请先上传X光影像"
+"请先上传X光影像 / 먼저 X선 영상을 업로드하세요"
 );
 
 return;
 
 }
 
-analyzeBtn.disabled =
-true;
+result.innerHTML=`
 
-result.innerHTML = `
-<div class="loading">
-⏳ AI正在分析中...
+<div class="result-item">
+
+⏳ AI分析中...
+
+<br>
+
+AI 분석 중...
+
 </div>
+
 `;
 
 setTimeout(()=>{
 
-const confidence =
+const confidence=
 Math.floor(
-92 +
-Math.random()*7
+92+Math.random()*7
 );
 
-const reportHtml = `
+const reportHtml=`
 
 <div class="result-item">
 
 <h3>
+
 ✅ 检测完成
+
+<br>
+
+검사 완료
+
 </h3>
 
 <p>
-检测结果：
-疑似桡骨远端骨折
+
+检测结果：疑似桡骨远端骨折
+
+<br>
+
+검사 결과 : 원위 요골 골절 의심
+
 </p>
 
 <p>
-严重程度：
-中度
+
+严重程度：中度
+
+<br>
+
+손상 정도 : 중등도
+
 </p>
 
 <p>
-建议：
-进一步CT检查
+
+建议：进一步CT检查
+
+<br>
+
+권장사항 : CT 추가 검사
+
 </p>
 
 <p>
-置信度：
-${confidence}%
+
+置信度：${confidence}%
+
+<br>
+
+신뢰도 : ${confidence}%
+
 </p>
-
-<div class="progress">
-
-<div
-class="progress-bar"
-style="
-width:${confidence}%;
-">
-</div>
-
-</div>
 
 </div>
 
 <div class="result-item">
+
 诊断建议：
-建议前往正规骨科进一步检查。
+
+建议前往正规骨科进一步检查
+
+<br><br>
+
+진단 권고 :
+
+정형외과 추가 진료 권장
+
 </div>
 
 <div class="result-item">
-生成时间：
+
 ${new Date().toLocaleString()}
+
 </div>
 
 `;
 
-result.innerHTML =
+result.innerHTML=
 reportHtml;
 
 localStorage.setItem(
 RESULT_KEY,
 reportHtml
 );
-
-let history =
-JSON.parse(
-localStorage.getItem(
-HISTORY_KEY
-) || "[]"
-);
-
-history.unshift(
-"骨折分析 - " +
-new Date().toLocaleString()
-);
-
-history =
-history.slice(
-0,
-20
-);
-
-localStorage.setItem(
-HISTORY_KEY,
-JSON.stringify(
-history
-)
-);
-
-analyzeBtn.disabled =
-false;
 
 },2500);
 
@@ -704,14 +701,6 @@ resetBtn.addEventListener(
 "click",
 function(){
 
-if(
-!confirm(
-"确定清空图片和分析结果吗？"
-)
-){
-return;
-}
-
 localStorage.removeItem(
 IMAGE_KEY
 );
@@ -720,19 +709,19 @@ localStorage.removeItem(
 RESULT_KEY
 );
 
-localStorage.removeItem(
-HISTORY_KEY
-);
+preview.src="";
+preview.style.display="none";
+currentImage=null;
 
-preview.src = "";
+result.innerHTML=`
 
-preview.style.display =
-"none";
+等待上传影像
 
-currentImage = null;
+<br>
 
-result.innerHTML =
-"等待上传影像...";
+영상 업로드 대기중
+
+`;
 
 location.reload();
 
@@ -747,7 +736,7 @@ document
 "click",
 function(){
 
-const user =
+const user=
 document
 .getElementById(
 "username"
@@ -755,7 +744,7 @@ document
 .value
 .trim();
 
-const pass =
+const pass=
 document
 .getElementById(
 "password"
@@ -766,7 +755,7 @@ document
 if(!user){
 
 alert(
-"请输入用户名"
+"请输入用户名 / 사용자명을 입력하세요"
 );
 
 return;
@@ -776,7 +765,7 @@ return;
 if(!pass){
 
 alert(
-"请输入密码"
+"请输入密码 / 비밀번호를 입력하세요"
 );
 
 return;
@@ -786,7 +775,7 @@ return;
 alert(
 "欢迎 " +
 user +
-" 使用骨影智析AI"
+" 使用骨影智析AI\n환영합니다"
 );
 
 }
