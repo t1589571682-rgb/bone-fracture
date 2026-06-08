@@ -4,10 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>骨影智析 AI V3.0 | 뼈 영상 지능 분석 AI</title>
-<!-- 图标库 提升UI质感 -->
 <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-/* ========== 全局变量 & 基础重置 ========== */
 :root {
   --primary: #3b82f6;
   --primary-dark: #1d4ed8;
@@ -36,7 +34,6 @@ body {
   line-height: 1.7;
 }
 
-/* 美化滚动条 */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -46,7 +43,7 @@ body {
   border-radius: 3px;
 }
 
-/* ========== 头部导航 ========== */
+/* 头部导航 */
 header {
   display: flex;
   justify-content: space-between;
@@ -61,6 +58,12 @@ header {
   z-index: 999;
 }
 
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
 .logo {
   font-size: 28px;
   font-weight: 700;
@@ -71,11 +74,10 @@ header {
   text-shadow: 0 0 6px rgba(59, 130, 246, 0.3);
 }
 
-/* 个人信息栏 */
-.user-info {
+/* 个人信息 固定显示 전시옥 202217019 */
+.person-info {
   color: var(--text-gray);
-  font-size: 14px;
-  margin-left: 20px;
+  font-size: 15px;
   border-left: 1px solid var(--border);
   padding-left: 20px;
 }
@@ -108,7 +110,6 @@ nav a:hover::after {
   width: 100%;
 }
 
-/* ========== 主体容器 ========== */
 .container {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -118,7 +119,6 @@ nav a:hover::after {
   margin: 0 auto;
 }
 
-/* 卡片通用样式 */
 .card {
   background: var(--bg-card);
   border-radius: 20px;
@@ -141,7 +141,6 @@ h2 {
   gap: 12px;
 }
 
-/* AI在线状态标签 */
 .status {
   display: inline-flex;
   align-items: center;
@@ -161,7 +160,7 @@ h2 {
   50% { opacity: 0.5; }
 }
 
-/* ========== 上传区域 ========== */
+/* 上传区域 */
 .upload-box {
   border: 2px dashed rgba(59, 130, 246, 0.4);
   border-radius: 18px;
@@ -206,7 +205,6 @@ h2 {
   margin-top: 20px;
 }
 
-/* 按钮样式 */
 button {
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: #fff;
@@ -235,7 +233,7 @@ button:disabled {
   background: linear-gradient(135deg, #64748b, #475569);
 }
 
-/* ========== 分析结果区域 ========== */
+/* 结果区域 */
 .result-item {
   padding: 18px;
   margin-bottom: 14px;
@@ -264,7 +262,7 @@ button:disabled {
   border-radius: 12px;
 }
 
-/* ========== 登录区域 ========== */
+/* 登录框 */
 .login-box input {
   width: 100%;
   padding: 14px 16px;
@@ -283,7 +281,7 @@ button:disabled {
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
-/* ========== 历史记录 ========== */
+/* 历史记录 */
 .history-item {
   padding: 14px 16px;
   background: var(--bg-inner);
@@ -308,7 +306,6 @@ button:disabled {
   border-radius: 8px;
 }
 
-/* ========== 加载样式 & 双语文本 ========== */
 .loading {
   color: var(--primary);
   font-size: 18px;
@@ -316,18 +313,21 @@ button:disabled {
   text-align: center;
 }
 
-.zh {
-  color: var(--text-normal);
+/* 中韩双语样式 强制生效 */
+.cn {
+  display: inline-block;
+  color: #ffffff;
+  margin-right: 8px;
 }
 .kr {
-  color: var(--text-gray);
+  display: inline-block;
+  color: #94a3b8;
   font-size: 0.9em;
 }
 .tip {
   margin-top: 6px;
 }
 
-/* ========== 底部 ========== */
 footer {
   text-align: center;
   padding: 30px;
@@ -337,7 +337,6 @@ footer {
   border-top: 1px solid rgba(51, 65, 85, 0.3);
 }
 
-/* ========== 移动端适配 ========== */
 @media (max-width: 900px) {
   .container {
     grid-template-columns: 1fr;
@@ -347,10 +346,9 @@ footer {
     flex-direction: column;
     gap: 16px;
   }
-  .user-info {
+  .person-info {
     border: none;
     padding: 0;
-    margin: 10px 0;
   }
   nav a {
     margin: 0 10px;
@@ -367,123 +365,116 @@ footer {
 </head>
 
 <body>
-<!-- 头部导航 + 新增个人信息 전시옥 202217019 -->
+<!-- 头部：LOGO + 固定个人信息 전시옥 202217019 -->
 <header>
-  <div style="display: flex; align-items: center;">
+  <div class="logo-wrap">
     <div class="logo">
       <i class="fa-solid fa-bone"></i>
       骨影智析 AI
     </div>
-    <!-- 固定信息：전시옥 202217019 -->
-    <div class="user-info">
+    <!-- 固定信息：전시옥 202217019 永久显示 -->
+    <div class="person-info">
       전시옥 | 202217019
     </div>
   </div>
   <nav>
-    <a href="#"><span class="zh">首页</span> <span class="kr">홈</span></a>
-    <a href="#"><span class="zh">AI分析</span> <span class="kr">AI 분석</span></a>
-    <a href="#"><span class="zh">病例库</span> <span class="kr">케이스 라이브러리</span></a>
-    <a href="#"><span class="zh">报告中心</span> <span class="kr">보고서 센터</span></a>
-    <a href="#"><span class="zh">用户中心</span> <span class="kr">사용자 센터</span></a>
+    <a href="#"><span class="cn">首页</span> <span class="kr">홈</span></a>
+    <a href="#"><span class="cn">AI分析</span> <span class="kr">AI 분석</span></a>
+    <a href="#"><span class="cn">病例库</span> <span class="kr">케이스 라이브러리</span></a>
+    <a href="#"><span class="cn">报告中心</span> <span class="kr">보고서 센터</span></a>
+    <a href="#"><span class="cn">用户中心</span> <span class="kr">사용자 센터</span></a>
   </nav>
 </header>
 
-<!-- 主体内容 -->
 <div class="container">
-  <!-- 左侧：影像上传区域 -->
   <div>
     <div class="card">
       <h2>
-        <span class="zh">X光影像分析</span>
+        <span class="cn">X光影像分析</span>
         <span class="kr">X선 영상 분석</span>
-        <span class="status"><i class="fa-solid fa-circle"></i> <span class="zh">AI在线</span> <span class="kr">AI 온라인</span></span>
+        <span class="status"><i class="fa-solid fa-circle"></i> <span class="cn">AI在线</span> <span class="kr">AI 온라인</span></span>
       </h2>
       <div class="upload-box" id="uploadArea">
         <input type="file" id="fileInput" accept="image/*">
         <div class="upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
-        <p class="zh">点击区域上传 X光 影像</p>
-        <p class="kr tip">영역을 클릭하여 X선 영상을 업로드하세요</p>
+        <p><span class="cn">点击区域上传 X光 影像</span></p>
+        <p class="tip"><span class="kr">영역을 클릭하여 X선 영상을 업로드하세요</span></p>
 
         <img id="preview" alt="影像预览 | 영상 미리보기">
 
         <div class="btn-wrap">
-          <button id="analyzeBtn"><span class="zh">开始分析</span> <span class="kr">분석 시작</span></button>
-          <button class="btn-reset" id="resetBtn"><span class="zh">重置图片</span> <span class="kr">이미지 초기화</span></button>
+          <button id="analyzeBtn"><span class="cn">开始分析</span> <span class="kr">분석 시작</span></button>
+          <button class="btn-reset" id="resetBtn"><span class="cn">重置图片</span> <span class="kr">이미지 초기화</span></button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 右侧：结果、登录、历史记录 -->
   <div>
-    <!-- 分析结果 -->
     <div class="card">
       <h2>
-        <span class="zh">分析结果</span>
+        <span class="cn">分析结果</span>
         <span class="kr">분석 결과</span>
       </h2>
       <div id="result">
-        <p class="zh">等待上传影像...</p>
-        <p class="kr tip">영상 업로드를 기다리는 중...</p>
+        <p><span class="cn">等待上传影像...</span></p>
+        <p class="tip"><span class="kr">영상 업로드를 기다리는 중...</span></p>
       </div>
     </div>
 
-    <!-- 用户登录 -->
     <div class="card" style="margin-top:24px">
       <h2>
-        <span class="zh">用户登录</span>
+        <span class="cn">用户登录</span>
         <span class="kr">사용자 로그인</span>
       </h2>
       <div class="login-box">
         <input type="text" id="username" placeholder="用户名 | 사용자 이름">
         <input type="password" id="pwd" placeholder="密码 | 비밀번호">
         <button id="loginBtn" style="width:100%;margin-top:16px;">
-          <span class="zh">登录</span>
+          <span class="cn">登录</span>
           <span class="kr">로그인</span>
         </button>
       </div>
     </div>
 
-    <!-- 历史记录 -->
     <div class="card" style="margin-top:24px">
       <h2>
-        <span class="zh">历史记录</span>
+        <span class="cn">历史记录</span>
         <span class="kr">기록 조회</span>
       </h2>
       <div class="history-item">
         <div>
-          <span class="zh">左手腕X光</span>
+          <span class="cn">左手腕X光</span>
           <span class="kr tip">왼쪽 손목 X선</span>
         </div>
-        <button class="del-btn"><span class="zh">删除</span> <span class="kr">삭제</span></button>
+        <button class="del-btn"><span class="cn">删除</span> <span class="kr">삭제</span></button>
       </div>
       <div class="history-item">
         <div>
-          <span class="zh">右膝关节X光</span>
+          <span class="cn">右膝关节X光</span>
           <span class="kr tip">오른쪽 무릎 관절 X선</span>
         </div>
-        <button class="del-btn"><span class="zh">删除</span> <span class="kr">삭제</span></button>
+        <button class="del-btn"><span class="cn">删除</span> <span class="kr">삭제</span></button>
       </div>
       <div class="history-item">
         <div>
-          <span class="zh">胸部X光</span>
+          <span class="cn">胸部X光</span>
           <span class="kr tip">흉부 X선</span>
         </div>
-        <button class="del-btn"><span class="zh">删除</span> <span class="kr">삭제</span></button>
+        <button class="del-btn"><span class="cn">删除</span> <span class="kr">삭제</span></button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- 页脚 -->
 <footer>
   <p>Bone Vision AI V3.0 | 뼈 영상 지능 분석 시스템</p>
-  <p class="tip" style="margin-top:8px;">骨科影像智能分析系统 | 정형외과 영상 지능 분석 시스템</p>
-  <p class="tip" style="margin-top:8px;">전시옥 202217019</p>
+  <p class="tip">骨科影像智能分析系统 | 정형외과 영상 지능 분석 시스템</p>
+  <!-- 底部再次固定展示个人信息 -->
+  <p class="tip" style="margin-top:10px; font-weight:bold;">전시옥 202217019</p>
 </footer>
 
 <script>
-// 获取页面元素
 const fileInput = document.getElementById("fileInput");
 const uploadArea = document.getElementById("uploadArea");
 const preview = document.getElementById("preview");
@@ -496,28 +487,25 @@ const pwd = document.getElementById("pwd");
 const delBtns = document.querySelectorAll(".del-btn");
 
 let currentFile = null;
-// 本地缓存key，实现图片刷新/打开链接不消失
 const IMG_CACHE_KEY = "bone_ai_upload_img";
 
-// 页面加载：读取缓存图片
+// 页面加载读取缓存图片
 window.onload = function() {
   const cacheImg = localStorage.getItem(IMG_CACHE_KEY);
   if (cacheImg) {
     preview.src = cacheImg;
     preview.style.display = "block";
     result.innerHTML = `
-      <p class="zh">已加载历史图片，可重新分析</p>
-      <p class="kr tip">저장된 이미지를 불러왔습니다. 재분석 가능</p>
+      <p><span class="cn">已加载历史图片，可重新分析</span></p>
+      <p class="tip"><span class="kr">저장된 이미지를 불러왔습니다. 재분석 가능</span></p>
     `;
   }
 }
 
-// 点击上传区域唤起文件选择
 uploadArea.addEventListener("click", function() {
   fileInput.click();
 });
 
-// 选择文件 + 缓存图片
 fileInput.addEventListener("change", function(e) {
   currentFile = e.target.files[0];
   if (!currentFile) {
@@ -525,7 +513,6 @@ fileInput.addEventListener("change", function(e) {
     localStorage.removeItem(IMG_CACHE_KEY);
     return;
   }
-  // 限制图片大小 10MB
   if (currentFile.size > 10 * 1024 * 1024) {
     alert("图片大小不能超过10MB!\n이미지 크기는 10MB를 초과할 수 없습니다!");
     return;
@@ -534,30 +521,26 @@ fileInput.addEventListener("change", function(e) {
   const imgUrl = URL.createObjectURL(currentFile);
   preview.src = imgUrl;
   preview.style.display = "block";
-  // 存入本地缓存
   localStorage.setItem(IMG_CACHE_KEY, imgUrl);
 
   result.innerHTML = `
-    <p class="zh">影像已上传，点击【开始分析】</p>
-    <p class="kr tip">영상 업로드 완료, [분석 시작]을 클릭하세요</p>
+    <p><span class="cn">影像已上传，点击【开始分析】</span></p>
+    <p class="tip"><span class="kr">영상 업로드 완료, [분석 시작]을 클릭하세요</span></p>
   `;
 });
 
-// 重置图片
 resetBtn.addEventListener("click", function() {
   preview.style.display = "none";
   fileInput.value = "";
   currentFile = null;
   localStorage.removeItem(IMG_CACHE_KEY);
   result.innerHTML = `
-    <p class="zh">等待上传影像...</p>
-    <p class="kr tip">영상 업로드를 기다리는 중...</p>
+    <p><span class="cn">等待上传影像...</span></p>
+    <p class="tip"><span class="kr">영상 업로드를 기다리는 중...</span></p>
   `;
 });
 
-// AI 分析功能
 analyzeBtn.addEventListener("click", function() {
-  // 校验是否有图片（文件 或 缓存）
   if (!currentFile && !localStorage.getItem(IMG_CACHE_KEY)) {
     alert("请先上传X光影像文件!\n먼저 X선 영상을 업로드해 주세요!");
     return;
@@ -567,23 +550,22 @@ analyzeBtn.addEventListener("click", function() {
   result.innerHTML = `
     <div class="loading">
       <i class="fa-solid fa-spinner fa-spin"></i>
-      <p class="zh">AI正在智能分析中，请稍候...</p>
-      <p class="kr tip">AI가 분석 중입니다. 잠시만 기다려주세요...</p>
+      <p><span class="cn">AI正在智能分析中，请稍候...</span></p>
+      <p class="tip"><span class="kr">AI가 분석 중입니다. 잠시만 기다려주세요...</span></p>
     </div>
   `;
 
   setTimeout(() => {
     const confidence = Math.floor(90 + Math.random() * 9);
-    // 双语诊断结果
     result.innerHTML = `
       <div class="result-item">
-        <h3 class="zh">✅ 检测完成</h3>
-        <p class="kr tip">✅ 검사 완료</p>
+        <h3><span class="cn">✅ 检测完成</span></h3>
+        <p class="tip"><span class="kr">✅ 검사 완료</span></p>
 
-        <p><span class="zh">检测结果：疑似桡骨远端骨折</span> <span class="kr tip">검사 결과: 요골 원위부 골절 의심</span></p>
-        <p><span class="zh">严重程度：中度</span> <span class="kr tip">심각도: 중등도</span></p>
-        <p><span class="zh">诊疗建议：进一步CT检查</span> <span class="kr tip">진단 권장: CT 추가 검사</span></p>
-        <p><span class="zh">识别置信度：${confidence}%</span> <span class="kr tip">인식 신뢰도</span></p>
+        <p><span class="cn">检测结果：疑似桡骨远端骨折</span> <span class="kr">검사 결과: 요골 원위부 골절 의심</span></p>
+        <p><span class="cn">严重程度：中度</span> <span class="kr">심각도: 중등도</span></p>
+        <p><span class="cn">诊疗建议：进一步CT检查</span> <span class="kr">진단 권장: CT 추가 검사</span></p>
+        <p><span class="cn">识别置信度：${confidence}%</span> <span class="kr">인식 신뢰도: ${confidence}%</span></p>
 
         <div class="progress">
           <div class="progress-bar" style="width:${confidence}%"></div>
@@ -591,25 +573,22 @@ analyzeBtn.addEventListener("click", function() {
       </div>
 
       <div class="result-item">
-        <p class="zh"><strong>诊断建议：</strong>建议前往正规骨科门诊做进一步影像学检查，结合临床体征确诊。</p>
-        <p class="kr tip"><strong>진단 제안:</strong> 정형외과에서 추가 영상 검사를 받고 임상 증상과 함께 확진하세요.</p>
+        <p><span class="cn"><strong>诊断建议：</strong>建议前往正规骨科门诊做进一步影像学检查，结合临床体征确诊。</span></p>
+        <p class="tip"><span class="kr"><strong>진단 제안:</strong> 정형외과에서 추가 영상 검사를 받고 임상 증상과 함께 확진하세요.</span></p>
       </div>
 
       <div class="result-item">
-        <p class="zh"><strong>生成时间：</strong>${new Date().toLocaleString()}</p>
-        <p class="kr tip"><strong>생성 시간</strong></p>
+        <p><span class="cn"><strong>生成时间：</strong>${new Date().toLocaleString()}</span></p>
+        <p class="tip"><span class="kr"><strong>생성 시간：</strong>${new Date().toLocaleString()}</span></p>
       </div>
     `;
-
     analyzeBtn.disabled = false;
   }, 2500);
 });
 
-// 登录校验（双语提示）
 loginBtn.addEventListener("click", function() {
   const user = username.value.trim();
   const pwdVal = pwd.value.trim();
-
   if (user === "") {
     alert("请输入用户名!\n사용자 이름을 입력해 주세요!");
     username.focus();
@@ -623,7 +602,6 @@ loginBtn.addEventListener("click", function() {
   alert(`登录成功！欢迎 ${user}\n로그인 성공! ${user}님 환영합니다`);
 });
 
-// 删除历史记录
 delBtns.forEach(btn => {
   btn.addEventListener("click", function() {
     if (confirm("确定要删除该记录吗?\n이 기록을 삭제하시겠습니까?")) {
