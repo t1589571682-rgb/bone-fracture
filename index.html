@@ -1,788 +1,268 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-
+<html lang="ko">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>의료 영상 분석 시스템 | 医疗影像分析系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", "Microsoft Yahei", sans-serif;
+        }
 
-<meta charset="UTF-8">
+        body {
+            background-color: #eef2f7;
+            padding: 50px 15px;
+        }
 
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0">
+        .main-wrap {
+            max-width: 850px;
+            margin: 0 auto;
+        }
 
-<title>
+        /* 顶部标题区 */
+        .page-header {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #fff;
+            padding: 32px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.2);
+        }
 
-骨影智析 AI
-골 영상 AI 분석 시스템
+        .page-header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
 
-</title>
+        .page-header p {
+            font-size: 16px;
+            opacity: 0.9;
+            line-height: 1.7;
+        }
 
-<style>
+        /* 主体区域 上下分区布局（和参考页结构区分） */
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:
-"Microsoft YaHei",
-sans-serif;
-}
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+        }
 
-body{
-background:#0f172a;
-color:white;
-min-height:100vh;
-}
+        .card-title {
+            font-size: 20px;
+            color: #334155;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-header{
-background:#111827;
-padding:20px;
-border-bottom:
-1px solid #334155;
-}
+        .card-title span {
+            font-size: 15px;
+            color: #94a3b8;
+            font-weight: normal;
+        }
 
-.logo{
-font-size:30px;
-font-weight:bold;
-color:#60a5fa;
-text-align:center;
-}
+        /* 上传区域样式 */
+        .upload-container {
+            border: 3px dashed #c7d2fe;
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
 
-.logo-sub{
-font-size:15px;
-color:#cbd5e1;
-margin-top:8px;
-}
+        .upload-container:hover {
+            border-color: #6366f1;
+            background-color: #f8faff;
+        }
 
-.container{
-max-width:1400px;
-margin:auto;
-padding:20px;
-display:grid;
-grid-template-columns:
-2fr 1fr;
-gap:20px;
-}
+        #file-input {
+            display: none;
+        }
 
-.card{
-background:#1e293b;
-padding:20px;
-border-radius:15px;
-}
+        .upload-btn {
+            background-color: #6366f1;
+            color: #fff;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
 
-.welcome-box{
-background:#111827;
-padding:30px;
-border-radius:15px;
-margin-bottom:20px;
-text-align:center;
-}
+        .upload-btn:hover {
+            background-color: #4f46e5;
+        }
 
-.welcome-box h1{
-color:#60a5fa;
-margin-bottom:10px;
-}
+        .tip-text {
+            margin-top: 15px;
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+        }
 
-.welcome-box h3{
-font-weight:normal;
-color:#cbd5e1;
-margin-bottom:20px;
-}
+        /* 图片预览 */
+        .img-box {
+            margin-top: 25px;
+            text-align: center;
+        }
 
-.student-info{
-font-size:22px;
-color:#22c55e;
-line-height:1.8;
-font-weight:bold;
-}
+        #show-img {
+            max-width: 100%;
+            max-height: 350px;
+            border-radius: 8px;
+            display: none;
+            border: 1px solid #e2e8f0;
+        }
 
-h2{
-margin-bottom:20px;
-}
+        /* 结果展示区 */
+        .result-content {
+            min-height: 220px;
+            line-height: 2;
+            font-size: 15px;
+            color: #475569;
+        }
 
-.status{
-background:#16a34a;
-padding:4px 12px;
-border-radius:20px;
-font-size:12px;
-}
+        .result-kr {
+            color: #64748b;
+            font-size: 14px;
+        }
 
-.upload-box{
-border:
-2px dashed #475569;
-padding:40px;
-text-align:center;
-border-radius:15px;
-cursor:pointer;
-}
+        .status-tag {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 8px 16px;
+            background-color: #dcfce7;
+            color: #16a34a;
+            border-radius: 30px;
+            font-weight: bold;
+        }
 
-#fileInput{
-display:none;
-}
+        /* 底部作者信息 */
+        .author-info {
+            margin-top: 35px;
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #cbd5e1;
+            color: #64748b;
+            font-size: 15px;
+        }
 
-#preview{
-width:100%;
-max-height:550px;
-object-fit:contain;
-margin-top:20px;
-display:none;
-border-radius:10px;
-}
-
-button{
-background:#2563eb;
-color:white;
-border:none;
-padding:12px 20px;
-border-radius:10px;
-cursor:pointer;
-margin-top:15px;
-}
-
-.reset-btn{
-background:#dc2626;
-margin-left:10px;
-}
-
-.result-item{
-background:#0f172a;
-padding:15px;
-border-radius:10px;
-margin-bottom:10px;
-}
-
-.login-box input{
-width:100%;
-padding:10px;
-margin-top:10px;
-background:#0f172a;
-border:
-1px solid #334155;
-color:white;
-border-radius:8px;
-}
-
-.history-item{
-background:#0f172a;
-padding:10px;
-border-radius:10px;
-margin-bottom:10px;
-}
-
-footer{
-text-align:center;
-padding:20px;
-color:#94a3b8;
-}
-
-@media(max-width:900px){
-
-.container{
-grid-template-columns:1fr;
-}
-
-}
-
-</style>
-
+        /* 移动端适配 */
+        @media (max-width: 600px) {
+            .page-header h1 {
+                font-size: 22px;
+            }
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
-
 <body>
-
-<header>
-
-<div class="logo">
-
-🦴 骨影智析 AI
-
-<div class="logo-sub">
-
-골 영상 AI 분석 시스템
-
-</div>
-
-</div>
-
-</header>
-
-<div class="container">
-
-<div>
-
-<div class="welcome-box">
-
-<h1>
-
-欢迎使用骨影智析AI
-
-<br>
-
-골 영상 AI 분석 시스템에 오신 것을 환영합니다
-
-</h1>
-
-<h3>
-
-医学影像智能分析平台
-
-<br>
-
-의료 영상 지능형 분석 플랫폼
-
-</h3>
-
-<div class="student-info">
-
-姓名 / 이름
-
-<br>
-
-전시옥
-
-<br><br>
-
-学号 / 학번
-
-<br>
-
-202217019
-
-</div>
-
-</div>
-
-<div class="card">
-
-<h2>
-
-X光影像分析
-
-<br>
-
-X선 영상 분석
-
-<span class="status">
-
-AI在线
-
-</span>
-
-</h2>
-
-<div
-class="upload-box"
-id="uploadArea">
-
-<input
-type="file"
-id="fileInput"
-accept="image/*">
-
-<p>
-
-点击上传X光影像
-
-<br>
-
-X선 영상을 업로드하세요
-
-</p>
-
-<img id="preview">
-
-<br>
-
-<button id="analyzeBtn">
-
-开始分析
-
-<br>
-
-분석 시작
-
-</button>
-
-<button
-id="resetBtn"
-class="reset-btn">
-
-重置图片
-
-<br>
-
-이미지 초기화
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-<div>
-
-<div class="card">
-
-<h2>
-
-分析结果
-
-<br>
-
-분석 결과
-
-</h2>
-
-<div id="result">
-
-等待上传影像
-
-<br>
-
-영상 업로드 대기중
-
-</div>
-
-</div><div
-class="card"
-style="margin-top:20px">
-
-<h2>
-
-用户登录
-
-<br>
-
-사용자 로그인
-
-</h2>
-
-<div class="login-box">
-
-<input
-type="text"
-id="username"
-placeholder="用户名 / 사용자명">
-
-<input
-type="password"
-id="password"
-placeholder="密码 / 비밀번호">
-
-<button id="loginBtn">
-
-登录
-
-<br>
-
-로그인
-
-</button>
-
-</div>
-
-</div>
-
-<div
-class="card"
-style="margin-top:20px">
-
-<h2>
-
-历史记录
-
-<br>
-
-기록 내역
-
-</h2>
-
-<div id="historyList">
-
-<div class="history-item">
-
-左手腕X光
-
-<br>
-
-왼쪽 손목 X선
-
-</div>
-
-<div class="history-item">
-
-右膝关节X光
-
-<br>
-
-오른쪽 무릎 X선
-
-</div>
-
-<div class="history-item">
-
-胸部X光
-
-<br>
-
-흉부 X선
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<footer>
-
-Bone Vision AI V5.0
-
-<br>
-
-골 영상 AI 분석 시스템
-
-<br><br>
-
-전시옥
-
-<br>
-
-202217019
-
-</footer>
-
-<script>
-
-const IMAGE_KEY="bone_ai_image";
-const RESULT_KEY="bone_ai_result";
-const HISTORY_KEY="bone_ai_history";
-
-const fileInput=document.getElementById("fileInput");
-const uploadArea=document.getElementById("uploadArea");
-const preview=document.getElementById("preview");
-const analyzeBtn=document.getElementById("analyzeBtn");
-const resetBtn=document.getElementById("resetBtn");
-const result=document.getElementById("result");
-
-let currentImage=null;
-
-window.addEventListener(
-"DOMContentLoaded",
-function(){
-
-const savedImage=
-localStorage.getItem(
-IMAGE_KEY
-);
-
-const savedResult=
-localStorage.getItem(
-RESULT_KEY
-);
-
-if(savedImage){
-
-preview.src=savedImage;
-preview.style.display="block";
-currentImage=savedImage;
-
-}
-
-if(savedResult){
-
-result.innerHTML=
-savedResult;
-
-}
-
-}
-);
-
-uploadArea.addEventListener(
-"click",
-function(e){
-
-if(
-e.target.tagName==="BUTTON"
-){
-return;
-}
-
-fileInput.click();
-
-}
-);
-
-fileInput.addEventListener(
-"change",
-function(e){
-
-const file=e.target.files[0];
-
-if(!file) return;
-
-const reader=
-new FileReader();
-
-reader.onload=
-function(event){
-
-const base64=
-event.target.result;
-
-preview.src=
-base64;
-
-preview.style.display=
-"block";
-
-currentImage=
-base64;
-
-localStorage.setItem(
-IMAGE_KEY,
-base64
-);
-
-result.innerHTML=`
-
-<div class="result-item">
-
-图片上传成功
-
-<br>
-
-이미지 업로드 성공
-
-</div>
-
-`;
-
-};
-
-reader.readAsDataURL(
-file
-);
-
-}
-);
-
-analyzeBtn.addEventListener(
-"click",
-function(){
-
-if(!currentImage){
-
-alert(
-"请先上传X光影像 / 먼저 X선 영상을 업로드하세요"
-);
-
-return;
-
-}
-
-result.innerHTML=`
-
-<div class="result-item">
-
-⏳ AI分析中...
-
-<br>
-
-AI 분석 중...
-
-</div>
-
-`;
-
-setTimeout(()=>{
-
-const confidence=
-Math.floor(
-92+Math.random()*7
-);
-
-const reportHtml=`
-
-<div class="result-item">
-
-<h3>
-
-✅ 检测完成
-
-<br>
-
-검사 완료
-
-</h3>
-
-<p>
-
-检测结果：疑似桡骨远端骨折
-
-<br>
-
-검사 결과 : 원위 요골 골절 의심
-
-</p>
-
-<p>
-
-严重程度：中度
-
-<br>
-
-손상 정도 : 중등도
-
-</p>
-
-<p>
-
-建议：进一步CT检查
-
-<br>
-
-권장사항 : CT 추가 검사
-
-</p>
-
-<p>
-
-置信度：${confidence}%
-
-<br>
-
-신뢰도 : ${confidence}%
-
-</p>
-
-</div>
-
-<div class="result-item">
-
-诊断建议：
-
-建议前往正规骨科进一步检查
-
-<br><br>
-
-진단 권고 :
-
-정형외과 추가 진료 권장
-
-</div>
-
-<div class="result-item">
-
-${new Date().toLocaleString()}
-
-</div>
-
-`;
-
-result.innerHTML=
-reportHtml;
-
-localStorage.setItem(
-RESULT_KEY,
-reportHtml
-);
-
-},2500);
-
-}
-);
-
-resetBtn.addEventListener(
-"click",
-function(){
-
-localStorage.removeItem(
-IMAGE_KEY
-);
-
-localStorage.removeItem(
-RESULT_KEY
-);
-
-preview.src="";
-preview.style.display="none";
-currentImage=null;
-
-result.innerHTML=`
-
-等待上传影像
-
-<br>
-
-영상 업로드 대기중
-
-`;
-
-location.reload();
-
-}
-);
-
-document
-.getElementById(
-"loginBtn"
-)
-.addEventListener(
-"click",
-function(){
-
-const user=
-document
-.getElementById(
-"username"
-)
-.value
-.trim();
-
-const pass=
-document
-.getElementById(
-"password"
-)
-.value
-.trim();
-
-if(!user){
-
-alert(
-"请输入用户名 / 사용자명을 입력하세요"
-);
-
-return;
-
-}
-
-if(!pass){
-
-alert(
-"请输入密码 / 비밀번호를 입력하세요"
-);
-
-return;
-
-}
-
-alert(
-"欢迎 " +
-user +
-" 使用骨影智析AI\n환영합니다"
-);
-
-}
-);
-
-</script>
-
+    <div class="main-wrap">
+        <!-- 顶部标题 -->
+        <div class="page-header">
+            <h1>의료 영상 지능 분석 시스템</h1>
+            <p>医疗影像智能分析系统</p>
+            <p>이미지 업로드 후 자동 골절 판독 | 上传图片自动完成骨折判读</p>
+        </div>
+
+        <!-- 主体内容 -->
+        <div class="content-area">
+            <!-- 上传模块 -->
+            <div class="card">
+                <div class="card-title">
+                    이미지 업로드 <span>| 图片上传</span>
+                </div>
+                <div class="upload-container" id="upload-area">
+                    <label for="file-input">
+                        <button class="upload-btn">파일 선택 / 选择文件</button>
+                    </label>
+                    <input type="file" id="file-input" accept="image/*">
+                    <div class="tip-text">
+                        지원 형식: JPG, PNG, GIF<br>
+                        支持格式：JPG、PNG、GIF
+                    </div>
+                </div>
+                <div class="img-box">
+                    <img id="show-img" alt="미리보기 / 图片预览">
+                </div>
+            </div>
+
+            <!-- 分析结果模块 -->
+            <div class="card">
+                <div class="card-title">
+                    분석 결과 <span>| 分析结果</span>
+                </div>
+                <div class="result-content" id="result-area">
+                    <p>영상을 업로드해 주세요. 시스템이 분석을 시작합니다.</p>
+                    <p class="result-kr">请上传影像文件，系统将启动智能分析。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部：姓名+学号 -->
+        <div class="author-info">
+            <p>작성자(作者)：전시옥 &nbsp;&nbsp; 학번(学号)：202217019</p>
+        </div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('file-input');
+        const showImg = document.getElementById('show-img');
+        const resultArea = document.getElementById('result-area');
+
+        // 图片上传监听
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            // 图片预览
+            const reader = new FileReader();
+            reader.onload = function(res) {
+                showImg.src = res.target.result;
+                showImg.style.display = 'block';
+
+                // 加载中提示 中韩双语
+                resultArea.innerHTML = `
+                    <p>영상 데이터를 분석 중입니다. 잠시만 기다려 주세요...</p>
+                    <p class="result-kr">正在解析影像数据、提取特征，请稍候...</p>
+                `;
+
+                // 模拟分析延迟
+                setTimeout(() => {
+                    // 最终识别结果 双语对照
+                    resultArea.innerHTML = `
+                        <p>✅ 분석 완료 | 分析完成</p>
+                        <p>▪ 영상 종류: 골격 X선 영상</p>
+                        <p class="result-kr">▪ 影像类型：骨骼X光影像</p>
+
+                        <p>▪ 판독 결과: 횡행 골절이 확인됨</p>
+                        <p class="result-kr">▪ 判读结果：检出横行骨折</p>
+
+                        <p>▪ 특징 설명: 안정성 골절로 골절선이 수평으로 형성되며, 단면 전위 위험이 낮습니다.</p>
+                        <p class="result-kr">▪ 特征说明：属于稳定性骨折，骨折线呈水平走向，断端移位风险较低。</p>
+
+                        <span class="status-tag">정상 판독 / 识别有效</span>
+                    `;
+                }, 1500);
+            }
+            reader.readAsDataURL(file);
+        })
+    </script>
 </body>
-
 </html>
