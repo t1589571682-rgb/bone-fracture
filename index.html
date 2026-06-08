@@ -281,31 +281,6 @@ button:disabled {
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
-/* 历史记录 */
-.history-item {
-  padding: 14px 16px;
-  background: var(--bg-inner);
-  margin-bottom: 12px;
-  border-radius: 14px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid rgba(51, 65, 85, 0.5);
-  transition: var(--transition);
-}
-
-.history-item:hover {
-  border-color: rgba(59, 130, 246, 0.4);
-}
-
-.del-btn {
-  background: linear-gradient(135deg, var(--danger), #b91c1c);
-  padding: 6px 12px;
-  font-size: 12px;
-  margin: 0;
-  border-radius: 8px;
-}
-
 .loading {
   color: var(--primary);
   font-size: 18px;
@@ -313,7 +288,7 @@ button:disabled {
   text-align: center;
 }
 
-/* 中韩双语样式 强制生效 */
+/* 中韩双语样式 */
 .cn {
   display: inline-block;
   color: #ffffff;
@@ -436,41 +411,12 @@ footer {
         </button>
       </div>
     </div>
-
-    <div class="card" style="margin-top:24px">
-      <h2>
-        <span class="cn">历史记录</span>
-        <span class="kr">기록 조회</span>
-      </h2>
-      <div class="history-item">
-        <div>
-          <span class="cn">左手腕X光</span>
-          <span class="kr tip">왼쪽 손목 X선</span>
-        </div>
-        <button class="del-btn"><span class="cn">删除</span> <span class="kr">삭제</span></button>
-      </div>
-      <div class="history-item">
-        <div>
-          <span class="cn">右膝关节X光</span>
-          <span class="kr tip">오른쪽 무릎 관절 X선</span>
-        </div>
-        <button class="del-btn"><span class="cn">删除</span> <span class="kr">삭제</span></button>
-      </div>
-      <div class="history-item">
-        <div>
-          <span class="cn">胸部X光</span>
-          <span class="kr tip">흉부 X선</span>
-        </div>
-        <button class="del-btn"><span class="cn">删除</span> <span class="kr">삭제</span></button>
-      </div>
-    </div>
   </div>
 </div>
 
 <footer>
   <p>Bone Vision AI V3.0 | 뼈 영상 지능 분석 시스템</p>
   <p class="tip">骨科影像智能分析系统 | 정형외과 영상 지능 분석 시스템</p>
-  <!-- 底部再次固定展示个人信息 -->
   <p class="tip" style="margin-top:10px; font-weight:bold;">전시옥 202217019</p>
 </footer>
 
@@ -484,17 +430,24 @@ const result = document.getElementById("result");
 const loginBtn = document.getElementById("loginBtn");
 const username = document.getElementById("username");
 const pwd = document.getElementById("pwd");
-const delBtns = document.querySelectorAll(".del-btn");
 
 let currentFile = null;
+// 缓存Key，实现图片和分析结果永久保存
 const IMG_CACHE_KEY = "bone_ai_upload_img";
+const RESULT_CACHE_KEY = "bone_ai_analysis_result";
 
-// 页面加载读取缓存图片
+// 页面加载：读取缓存图片和分析结果
 window.onload = function() {
   const cacheImg = localStorage.getItem(IMG_CACHE_KEY);
+  const cacheResult = localStorage.getItem(RESULT_CACHE_KEY);
+  
   if (cacheImg) {
     preview.src = cacheImg;
     preview.style.display = "block";
+  }
+  if (cacheResult) {
+    result.innerHTML = cacheResult;
+  } else if (cacheImg) {
     result.innerHTML = `
       <p><span class="cn">已加载历史图片，可重新分析</span></p>
       <p class="tip"><span class="kr">저장된 이미지를 불러왔습니다. 재분석 가능</span></p>
@@ -511,6 +464,7 @@ fileInput.addEventListener("change", function(e) {
   if (!currentFile) {
     preview.style.display = "none";
     localStorage.removeItem(IMG_CACHE_KEY);
+    localStorage.removeItem(RESULT_CACHE_KEY);
     return;
   }
   if (currentFile.size > 10 * 1024 * 1024) {
@@ -518,15 +472,19 @@ fileInput.addEventListener("change", function(e) {
     return;
   }
 
-  const imgUrl = URL.createObjectURL(currentFile);
-  preview.src = imgUrl;
-  preview.style.display = "block";
-  localStorage.setItem(IMG_CACHE_KEY, imgUrl);
-
-  result.innerHTML = `
-    <p><span class="cn">影像已上传，点击【开始分析】</span></p>
-    <p class="tip"><span class="kr">영상 업로드 완료, [분석 시작]을 클릭하세요</span></p>
-  `;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const imgUrl = e.target.result;
+    preview.src = cachedImgUrl;
+    preview.style.display = "block";
+    localStorage.setItem(IMG_CACHE_KEY, imgUrl);
+    localStorage.removeItem(RESULT_CACHE_KEY);
+    result.innerHTML = `
+      <p><span class="cn">影像已上传，点击【开始分析】</span></p>
+      <p class="tip"><span class="kr">영상 업로드 완료, [분석 시작]을 클릭하세요</span></p>
+    `;
+  }
+  reader.readAsDataURL(currentFile);
 });
 
 resetBtn.addEventListener("click", function() {
@@ -534,6 +492,7 @@ resetBtn.addEventListener("click", function() {
   fileInput.value = "";
   currentFile = null;
   localStorage.removeItem(IMG_CACHE_KEY);
+  localStorage.removeItem(RESULT_CACHE_KEY);
   result.innerHTML = `
     <p><span class="cn">等待上传影像...</span></p>
     <p class="tip"><span class="kr">영상 업로드를 기다리는 중...</span></p>
@@ -541,7 +500,8 @@ resetBtn.addEventListener("click", function() {
 });
 
 analyzeBtn.addEventListener("click", function() {
-  if (!currentFile && !localStorage.getItem(IMG_CACHE_KEY)) {
+  const cacheImg = localStorage.getItem(IMG_CACHE_KEY);
+  if (!currentFile && !cacheImg) {
     alert("请先上传X光影像文件!\n먼저 X선 영상을 업로드해 주세요!");
     return;
   }
@@ -557,7 +517,7 @@ analyzeBtn.addEventListener("click", function() {
 
   setTimeout(() => {
     const confidence = Math.floor(90 + Math.random() * 9);
-    result.innerHTML = `
+    const analysisHTML = `
       <div class="result-item">
         <h3><span class="cn">✅ 检测完成</span></h3>
         <p class="tip"><span class="kr">✅ 검사 완료</span></p>
@@ -582,6 +542,10 @@ analyzeBtn.addEventListener("click", function() {
         <p class="tip"><span class="kr"><strong>생성 시간：</strong>${new Date().toLocaleString()}</span></p>
       </div>
     `;
+    
+    result.innerHTML = analysisHTML;
+    // 保存分析结果到本地缓存
+    localStorage.setItem(RESULT_CACHE_KEY, analysisHTML);
     analyzeBtn.disabled = false;
   }, 2500);
 });
@@ -600,14 +564,6 @@ loginBtn.addEventListener("click", function() {
     return;
   }
   alert(`登录成功！欢迎 ${user}\n로그인 성공! ${user}님 환영합니다`);
-});
-
-delBtns.forEach(btn => {
-  btn.addEventListener("click", function() {
-    if (confirm("确定要删除该记录吗?\n이 기록을 삭제하시겠습니까?")) {
-      this.parentElement.remove();
-    }
-  });
 });
 </script>
 </body>
