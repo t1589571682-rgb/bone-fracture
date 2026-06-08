@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>골절 X-Ray 영상 지능형 분류 시스템 | 骨折X光影像智能分类系统</title>
+
+<title>骨影智析 AI V3.0</title>
 
 <style>
 
@@ -11,144 +12,151 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:"Malgun Gothic","Microsoft YaHei",sans-serif;
+font-family:Arial,sans-serif;
 }
 
 body{
-background:#16284d;
-padding:20px;
+background:#0f172a;
+color:white;
 min-height:100vh;
 }
 
-.container{
-max-width:1600px;
-margin:auto;
-}
-
-.title{
-text-align:center;
-font-size:42px;
-font-weight:bold;
-color:#67ff9d;
-margin-bottom:30px;
-line-height:1.5;
-}
-
-.upload-btn{
-display:block;
-width:320px;
-margin:0 auto 25px auto;
-background:#1495ff;
-color:white;
-text-align:center;
-padding:18px;
-font-size:22px;
-border-radius:12px;
-cursor:pointer;
-border:2px solid white;
-line-height:1.4;
-}
-
-#fileInput{
-display:none;
-}
-
-.main{
+header{
 display:flex;
-gap:20px;
-align-items:stretch;
-}
-
-.left{
-flex:7;
-}
-
-.right{
-flex:3;
-display:flex;
-flex-direction:column;
-gap:20px;
-}
-
-.image-box{
-height:700px;
-background:black;
-border:4px solid #4fffe7;
-border-radius:18px;
-overflow:hidden;
-display:flex;
-justify-content:center;
+justify-content:space-between;
 align-items:center;
-position:relative;
+padding:20px 40px;
+background:#111827;
+border-bottom:1px solid #334155;
 }
 
-.image-box img{
-width:100%;
-height:100%;
-object-fit:contain;
-display:none;
+.logo{
+font-size:28px;
+font-weight:bold;
 }
 
-.placeholder{
+nav a{
 color:white;
-font-size:34px;
-text-align:center;
-line-height:1.8;
+text-decoration:none;
+margin-left:20px;
+}
+
+nav a:hover{
+color:#60a5fa;
+}
+
+.container{
+display:grid;
+grid-template-columns:2fr 1fr;
+gap:20px;
 padding:20px;
 }
 
 .card{
-background:rgba(255,255,255,.08);
-padding:25px;
-border-radius:18px;
+background:#1e293b;
+border-radius:15px;
+padding:20px;
 }
 
-.card h2{
-color:#35d8ff;
-font-size:30px;
+h2{
 margin-bottom:20px;
-line-height:1.5;
 }
 
-.label{
-font-size:20px;
+.upload-box{
+border:2px dashed #475569;
+border-radius:15px;
+padding:40px;
+text-align:center;
+cursor:pointer;
+}
+
+.upload-box:hover{
+border-color:#3b82f6;
+}
+
+#preview{
+width:100%;
+max-height:600px;
+object-fit:contain;
+margin-top:20px;
+display:none;
+border-radius:10px;
+}
+
+button{
+background:#2563eb;
 color:white;
-margin-bottom:10px;
-line-height:1.5;
+border:none;
+padding:12px 20px;
+border-radius:10px;
+cursor:pointer;
+margin-top:15px;
 }
 
-.fracture{
-font-size:32px;
-font-weight:bold;
-color:#ff6565;
-margin-bottom:20px;
-line-height:1.5;
+button:hover{
+background:#1d4ed8;
+}
+
+.result-item{
+padding:12px;
+margin-bottom:10px;
+background:#0f172a;
+border-radius:10px;
 }
 
 .progress{
-height:18px;
-background:#333;
-border-radius:20px;
+height:20px;
+background:#334155;
+border-radius:10px;
 overflow:hidden;
-margin:10px 0;
+margin-top:10px;
 }
 
 .progress-bar{
 height:100%;
-width:92.4%;
-background:#44ff66;
+width:0%;
+background:#22c55e;
+transition:1s;
 }
 
-.percent{
-font-size:24px;
-color:white;
-font-weight:bold;
+.history-item{
+padding:10px;
+background:#0f172a;
+margin-bottom:10px;
+border-radius:10px;
 }
 
-.text{
-font-size:18px;
+.login-box input{
+width:100%;
+padding:10px;
+margin-top:10px;
+background:#0f172a;
+border:1px solid #334155;
 color:white;
-line-height:1.8;
+border-radius:8px;
+}
+
+.status{
+display:inline-block;
+padding:5px 10px;
+background:#16a34a;
+border-radius:20px;
+font-size:12px;
+}
+
+footer{
+text-align:center;
+padding:20px;
+margin-top:20px;
+color:#94a3b8;
+}
+
+@media(max-width:900px){
+
+.container{
+grid-template-columns:1fr;
+}
+
 }
 
 </style>
@@ -156,39 +164,56 @@ line-height:1.8;
 
 <body>
 
-<div class="container">
+<header>
 
-<div class="title">
-골절 X-Ray 영상 지능형 분류 시스템<br>
-骨折X光影像智能分类系统
+<div class="logo">
+🦴 骨影智析 AI
 </div>
 
-<label class="upload-btn" for="fileInput">
-X-Ray 영상 업로드<br>
-上传X光影像
-</label>
+<nav>
+
+<a href="#">首页</a>
+
+<a href="#">AI分析</a>
+
+<a href="#">病例库</a>
+
+<a href="#">报告中心</a>
+
+<a href="#">用户中心</a>
+
+</nav>
+
+</header>
+
+<div class="container">
+
+<div>
+
+<div class="card">
+
+<h2>
+X光影像分析
+<span class="status">AI在线</span>
+</h2>
+
+<div class="upload-box">
 
 <input
 type="file"
 id="fileInput"
-accept="image/*">
+accept="image/*"
+>
 
-<div class="main">
+<p style="margin-top:15px">
+上传X光影像
+</p>
 
-<div class="left">
+<img id="preview">
 
-<div class="image-box">
-
-<img
-id="previewImg"
-alt="X-Ray">
-
-<div
-id="placeholder"
-class="placeholder">
-
-X-Ray 영상을 업로드해 주세요<br>
-请上传X光影像
+<button id="analyzeBtn">
+开始分析
+</button>
 
 </div>
 
@@ -196,62 +221,58 @@ X-Ray 영상을 업로드해 주세요<br>
 
 </div>
 
-<div class="right">
+<div>
 
 <div class="card">
 
-<h2>
-AI 분석 결과<br>
-AI分析结果
-</h2>
+<h2>分析结果</h2>
 
-<div class="label">
-골절 분류<br>
-骨折分类
-</div>
+<div id="result">
 
-<div class="fracture">
-분쇄 골절<br>
-粉碎性骨折
-</div>
+等待上传影像...
 
-<div class="label">
-예측 신뢰도<br>
-检测置信度
-</div>
-
-<div class="progress">
-<div class="progress-bar"></div>
-</div>
-
-<div class="percent">
-92.4%
-</div>
-
-<br>
-
-<div class="label">
-골절 설명<br>
-骨折说明
-</div>
-
-<div class="text">
-3개 이상의 골편으로 분리된 불안정 골절이며 전위 위험이 높습니다.<br><br>
-骨碎裂3块以上，不稳定骨折，易发生移位。
 </div>
 
 </div>
 
-<div class="card">
+<div class="card" style="margin-top:20px">
 
-<h2>
-임상 권고<br>
-临床建议
-</h2>
+<h2>用户登录</h2>
 
-<div class="text">
-영상의학과 전문의 진단과 함께 필요 시 CT 또는 MRI 검사를 권장합니다.<br><br>
-建议结合放射科医师诊断结果，必要时进行CT或MRI进一步检查，并由骨科专科医师评估治疗方案。
+<div class="login-box">
+
+<input
+type="text"
+placeholder="用户名"
+>
+
+<input
+type="password"
+placeholder="密码"
+>
+
+<button>
+登录
+</button>
+
+</div>
+
+</div>
+
+<div class="card" style="margin-top:20px">
+
+<h2>历史记录</h2>
+
+<div class="history-item">
+左手腕X光
+</div>
+
+<div class="history-item">
+右膝关节X光
+</div>
+
+<div class="history-item">
+胸部X光
 </div>
 
 </div>
@@ -260,58 +281,129 @@ AI分析结果
 
 </div>
 
-</div>
+<footer>
+
+Bone Vision AI V3.0
+
+</footer>
 
 <script>
 
 const fileInput =
 document.getElementById("fileInput");
 
-const previewImg =
-document.getElementById("previewImg");
+const preview =
+document.getElementById("preview");
 
-const placeholder =
-document.getElementById("placeholder");
+const analyzeBtn =
+document.getElementById("analyzeBtn");
 
-window.onload=function(){
+const result =
+document.getElementById("result");
 
-const savedImage =
-localStorage.getItem("savedImage");
+let currentFile = null;
 
-if(savedImage){
+fileInput.addEventListener(
+"change",
+function(e){
 
-previewImg.src=savedImage;
-previewImg.style.display="block";
-placeholder.style.display="none";
+currentFile =
+e.target.files[0];
+
+if(!currentFile) return;
+
+preview.src =
+URL.createObjectURL(currentFile);
+
+preview.style.display="block";
 
 }
-
-}
-
-fileInput.addEventListener("change",function(){
-
-const file=this.files[0];
-
-if(!file) return;
-
-const reader=new FileReader();
-
-reader.onload=function(e){
-
-previewImg.src=e.target.result;
-previewImg.style.display="block";
-placeholder.style.display="none";
-
-localStorage.setItem(
-"savedImage",
-e.target.result
 );
 
-};
+analyzeBtn.addEventListener(
+"click",
+function(){
 
-reader.readAsDataURL(file);
+if(!currentFile){
 
-});
+alert("请先上传影像");
+
+return;
+
+}
+
+result.innerHTML = `
+<h3>AI分析中...</h3>
+`;
+
+setTimeout(()=>{
+
+const confidence =
+Math.floor(
+90 + Math.random()*9
+);
+
+result.innerHTML = `
+
+<div class="result-item">
+
+<h3>
+检测完成
+</h3>
+
+<p>
+检测结果：
+疑似桡骨远端骨折
+</p>
+
+<p>
+严重程度：
+中度
+</p>
+
+<p>
+建议：
+进一步CT检查
+</p>
+
+<p>
+置信度：
+${confidence}%
+</p>
+
+<div class="progress">
+
+<div
+class="progress-bar"
+style="width:${confidence}%"
+></div>
+
+</div>
+
+</div>
+
+<div class="result-item">
+
+诊断建议：
+
+建议前往骨科进一步检查。
+
+</div>
+
+<div class="result-item">
+
+生成时间：
+
+${new Date().toLocaleString()}
+
+</div>
+
+`;
+
+},2500);
+
+}
+);
 
 </script>
 
