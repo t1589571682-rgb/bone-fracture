@@ -366,7 +366,7 @@ footer {
         <p><span class="cn">点击区域上传 X光 影像</span></p>
         <p class="tip"><span class="kr">영역을 클릭하여 X선 영상을 업로드하세요</span></p>
 
-        <img id="preview" alt="影像预览 | 영상 미리보기">
+        <img id="preview" alt="影像预览">
 
         <div class="btn-wrap">
           <button id="analyzeBtn"><span class="cn">开始分析</span> <span class="kr">분석 시작</span></button>
@@ -412,62 +412,59 @@ footer {
 </footer>
 
 <script>
-const fileInput = document.getElementById("fileInput");
-const uploadArea = document.getElementById("uploadArea");
-const preview = document.getElementById("preview");
-const analyzeBtn = document.getElementById("analyzeBtn");
-const resetBtn = document.getElementById("resetBtn");
-const result = document.getElementById("result");
-const loginBtn = document.getElementById("loginBtn");
-const username = document.getElementById("username");
-const pwd = document.getElementById("pwd");
+// 固定存储键
+const IMAGE_STORAGE_KEY = "xray_image_base64";
+const RESULT_STORAGE_KEY = "xray_analysis_html";
 
-// 缓存键名
-const IMG_KEY = "bone_img_data";
-const RES_KEY = "bone_result_data";
+// 页面加载立即执行读取
+window.addEventListener('DOMContentLoaded', function() {
+  const preview = document.getElementById('preview');
+  const result = document.getElementById('result');
 
-// 页面加载 优先读取缓存并渲染
-(function initData(){
   // 恢复图片
-  let imgData = localStorage.getItem(IMG_KEY);
-  if(imgData){
-    preview.src = imgData;
-    preview.style.display = "block";
+  const savedImg = localStorage.getItem(IMAGE_STORAGE_KEY);
+  if (savedImg) {
+    preview.src = savedImg;
+    preview.style.display = 'block';
   }
+
   // 恢复分析结果
-  let resData = localStorage.getItem(RES_KEY);
-  if(resData){
-    result.innerHTML = resData;
-  }else if(imgData){
+  const savedResult = localStorage.getItem(RESULT_STORAGE_KEY);
+  if (savedResult) {
+    result.innerHTML = savedResult;
+  } else if (savedImg) {
     result.innerHTML = `
       <p><span class="cn">已加载历史图片，可重新分析</span></p>
       <p class="tip"><span class="kr">저장된 이미지를 불러왔습니다. 재분석 가능</span></p>
     `;
   }
-})();
+});
 
-uploadArea.addEventListener("click", ()=> fileInput.click());
+// 上传图片
+document.getElementById('uploadArea').addEventListener('click', function() {
+  document.getElementById('fileInput').click();
+});
 
-// 选择图片
-fileInput.addEventListener("change", function(e){
-  let file = e.target.files[0];
-  if(!file) return;
-  if(file.size > 10 * 1024 * 1024){
-    alert("图片不能超过10MB!\n이미지 크기는 10MB를 초과할 수 없습니다!");
+document.getElementById('fileInput').addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 10 * 1024 * 1024) {
+    alert("图片不能超过10MB\n이미지 크기는 10MB를 초과할 수 없습니다");
     return;
   }
 
-  let reader = new FileReader();
-  reader.onload = function(ev){
-    let base64 = ev.target.result;
-    // 存入本地存储
-    localStorage.setItem(IMG_KEY, base64);
-    // 清空旧分析结果
-    localStorage.removeItem(RES_KEY);
+  const reader = new FileReader();
+  reader.onload = function(event) {
+    const base64Str = event.target.result;
+    // 强制写入本地存储
+    localStorage.setItem(IMAGE_STORAGE_KEY, base64Str);
+    localStorage.removeItem(RESULT_STORAGE_KEY);
 
-    preview.src = base64;
-    preview.style.display = "block";
-    result.innerHTML = `
+    const preview = document.getElementById('preview');
+    preview.src = base64Str;
+    preview.style.display = 'block';
+
+    document.getElementById('result').innerHTML = `
       <p><span class="cn">影像已上传，点击【开始分析】</span></p>
       <p class="tip"><span class="kr">영상 업로드 완료, [분석 시작]을 클릭하세요</span></p>
     `;
@@ -475,14 +472,18 @@ fileInput.addEventListener("change", function(e){
   reader.readAsDataURL(file);
 });
 
-// 分析
-analyzeBtn.addEventListener("click", function(){
-  if(!localStorage.getItem(IMG_KEY)){
-    alert("请先上传X光影像!\n먼저 X선 영상을 업로드해 주세요!");
+// 分析逻辑
+document.getElementById('analyzeBtn').addEventListener('click', function() {
+  if (!localStorage.getItem(IMAGE_STORAGE_KEY)) {
+    alert("请先上传X光影像\n먼저 X선 영상을 업로드해 주세요");
     return;
   }
-  analyzeBtn.disabled = true;
-  result.innerHTML = `
+
+  const btn = this;
+  btn.disabled = true;
+  const resultDom = document.getElementById('result');
+
+  resultDom.innerHTML = `
     <div class="loading">
       <i class="fa-solid fa-spinner fa-spin"></i>
       <p><span class="cn">AI正在智能分析中，请稍候...</span></p>
@@ -490,18 +491,18 @@ analyzeBtn.addEventListener("click", function(){
     </div>
   `;
 
-  setTimeout(()=>{
-    let rate = Math.floor(90 + Math.random() * 9);
-    let html = `
+  setTimeout(function() {
+    const randomRate = Math.floor(90 + Math.random() * 9);
+    const resHtml = `
       <div class="result-item">
         <h3><span class="cn">✅ 检测完成</span></h3>
         <p class="tip"><span class="kr">✅ 검사 완료</span></p>
         <p><span class="cn">检测结果：疑似桡骨远端骨折</span> <span class="kr">검사 결과: 요골 원위부 골절 의심</span></p>
         <p><span class="cn">严重程度：中度</span> <span class="kr">심각도: 중등도</span></p>
         <p><span class="cn">诊疗建议：进一步CT检查</span> <span class="kr">진단 권장: CT 추가 검사</span></p>
-        <p><span class="cn">识别置信度：${rate}%</span> <span class="kr">인식 신뢰도: ${rate}%</span></p>
+        <p><span class="cn">识别置信度：${randomRate}%</span> <span class="kr">인식 신뢰도: ${randomRate}%</span></p>
         <div class="progress">
-          <div class="progress-bar" style="width:${rate}%"></div>
+          <div class="progress-bar" style="width:${randomRate}%"></div>
         </div>
       </div>
       <div class="result-item">
@@ -513,40 +514,40 @@ analyzeBtn.addEventListener("click", function(){
         <p class="tip"><span class="kr"><strong>생성 시간：</strong>${new Date().toLocaleString()}</span></p>
       </div>
     `;
-    // 保存分析结果
-    localStorage.setItem(RES_KEY, html);
-    result.innerHTML = html;
-    analyzeBtn.disabled = false;
-  },2500);
+
+    // 强制保存结果
+    localStorage.setItem(RESULT_STORAGE_KEY, resHtml);
+    resultDom.innerHTML = resHtml;
+    btn.disabled = false;
+  }, 2500);
 });
 
-// 重置：清空所有缓存
-resetBtn.addEventListener("click", function(){
-  preview.style.display = "none";
-  fileInput.value = "";
-  localStorage.removeItem(IMG_KEY);
-  localStorage.removeItem(RES_KEY);
-  result.innerHTML = `
+// 重置按钮（仅这里会清空数据）
+document.getElementById('resetBtn').addEventListener('click', function() {
+  document.getElementById('preview').style.display = 'none';
+  document.getElementById('fileInput').value = '';
+  // 清空存储
+  localStorage.removeItem(IMAGE_STORAGE_KEY);
+  localStorage.removeItem(RESULT_STORAGE_KEY);
+  document.getElementById('result').innerHTML = `
     <p><span class="cn">等待上传影像...</span></p>
     <p class="tip"><span class="kr">영상 업로드를 기다리는 중...</span></p>
   `;
 });
 
 // 登录
-loginBtn.addEventListener("click", function(){
-  let u = username.value.trim();
-  let p = pwd.value.trim();
-  if(!u){
-    alert("请输入用户名!\n사용자 이름을 입력해 주세요!");
-    username.focus();
+document.getElementById('loginBtn').addEventListener('click', function() {
+  const user = document.getElementById('username').value.trim();
+  const pwd = document.getElementById('pwd').value.trim();
+  if (!user) {
+    alert("请输入用户名\n사용자 이름을 입력해 주세요");
     return;
   }
-  if(!p){
-    alert("请输入密码!\n비밀번호를 입력해 주세요!");
-    pwd.focus();
+  if (!pwd) {
+    alert("请输入密码\n비밀번호를 입력해 주세요");
     return;
   }
-  alert(`登录成功！欢迎 ${u}\n로그인 성공! ${u}님 환영합니다`);
+  alert(`登录成功！欢迎 ${user}\n로그인 성공! ${user}님 환영합니다`);
 });
 </script>
 </body>
