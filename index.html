@@ -43,7 +43,6 @@ body {
   border-radius: 3px;
 }
 
-/* 头部导航 */
 header {
   display: flex;
   justify-content: space-between;
@@ -74,7 +73,6 @@ header {
   text-shadow: 0 0 6px rgba(59, 130, 246, 0.3);
 }
 
-/* 个人信息 固定显示 전시옥 202217019 */
 .person-info {
   color: var(--text-gray);
   font-size: 15px;
@@ -160,7 +158,6 @@ h2 {
   50% { opacity: 0.5; }
 }
 
-/* 上传区域 */
 .upload-box {
   border: 2px dashed rgba(59, 130, 246, 0.4);
   border-radius: 18px;
@@ -233,7 +230,6 @@ button:disabled {
   background: linear-gradient(135deg, #64748b, #475569);
 }
 
-/* 结果区域 */
 .result-item {
   padding: 18px;
   margin-bottom: 14px;
@@ -262,7 +258,6 @@ button:disabled {
   border-radius: 12px;
 }
 
-/* 登录框 */
 .login-box input {
   width: 100%;
   padding: 14px 16px;
@@ -271,7 +266,6 @@ button:disabled {
   border: 1px solid var(--border);
   color: #fff;
   border-radius: 12px;
-  font-size: 15px;
   outline: none;
   transition: var(--transition);
 }
@@ -288,7 +282,6 @@ button:disabled {
   text-align: center;
 }
 
-/* 中韩双语样式 */
 .cn {
   display: inline-block;
   color: #ffffff;
@@ -340,14 +333,12 @@ footer {
 </head>
 
 <body>
-<!-- 头部：LOGO + 固定个人信息 전시옥 202217019 -->
 <header>
   <div class="logo-wrap">
     <div class="logo">
       <i class="fa-solid fa-bone"></i>
       骨影智析 AI
     </div>
-    <!-- 固定信息：전시옥 202217019 永久显示 -->
     <div class="person-info">
       전시옥 | 202217019
     </div>
@@ -431,82 +422,65 @@ const loginBtn = document.getElementById("loginBtn");
 const username = document.getElementById("username");
 const pwd = document.getElementById("pwd");
 
-let currentFile = null;
-// 本地存储Key，永久保存图片和分析结果
-const IMG_CACHE_KEY = "bone_ai_upload_img";
-const RESULT_CACHE_KEY = "bone_ai_analysis_result";
+// 缓存键名
+const IMG_KEY = "bone_img_data";
+const RES_KEY = "bone_result_data";
 
-// 页面加载：读取缓存图片和分析结果
-window.onload = function() {
-  const cacheImg = localStorage.getItem(IMG_CACHE_KEY);
-  const cacheResult = localStorage.getItem(RESULT_CACHE_KEY);
-  
-  if (cacheImg) {
-    preview.src = cacheImg;
+// 页面加载 优先读取缓存并渲染
+(function initData(){
+  // 恢复图片
+  let imgData = localStorage.getItem(IMG_KEY);
+  if(imgData){
+    preview.src = imgData;
     preview.style.display = "block";
   }
-  if (cacheResult) {
-    result.innerHTML = cacheResult;
-  } else if (cacheImg) {
+  // 恢复分析结果
+  let resData = localStorage.getItem(RES_KEY);
+  if(resData){
+    result.innerHTML = resData;
+  }else if(imgData){
     result.innerHTML = `
       <p><span class="cn">已加载历史图片，可重新分析</span></p>
       <p class="tip"><span class="kr">저장된 이미지를 불러왔습니다. 재분석 가능</span></p>
     `;
   }
-}
+})();
 
-uploadArea.addEventListener("click", function() {
-  fileInput.click();
-});
+uploadArea.addEventListener("click", ()=> fileInput.click());
 
-fileInput.addEventListener("change", function(e) {
-  currentFile = e.target.files[0];
-  if (!currentFile) {
-    preview.style.display = "none";
-    localStorage.removeItem(IMG_CACHE_KEY);
-    localStorage.removeItem(RESULT_CACHE_KEY);
-    return;
-  }
-  if (currentFile.size > 10 * 1024 * 1024) {
-    alert("图片大小不能超过10MB!\n이미지 크기는 10MB를 초과할 수 없습니다!");
+// 选择图片
+fileInput.addEventListener("change", function(e){
+  let file = e.target.files[0];
+  if(!file) return;
+  if(file.size > 10 * 1024 * 1024){
+    alert("图片不能超过10MB!\n이미지 크기는 10MB를 초과할 수 없습니다!");
     return;
   }
 
-  // 使用FileReader读取文件并转为Base64，存入localStorage
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const imgUrl = e.target.result;
-    preview.src = imgUrl;
+  let reader = new FileReader();
+  reader.onload = function(ev){
+    let base64 = ev.target.result;
+    // 存入本地存储
+    localStorage.setItem(IMG_KEY, base64);
+    // 清空旧分析结果
+    localStorage.removeItem(RES_KEY);
+
+    preview.src = base64;
     preview.style.display = "block";
-    localStorage.setItem(IMG_CACHE_KEY, imgUrl);
-    localStorage.removeItem(RESULT_CACHE_KEY);
     result.innerHTML = `
       <p><span class="cn">影像已上传，点击【开始分析】</span></p>
       <p class="tip"><span class="kr">영상 업로드 완료, [분석 시작]을 클릭하세요</span></p>
     `;
-  }
-  reader.readAsDataURL(currentFile);
+  };
+  reader.readAsDataURL(file);
 });
 
-resetBtn.addEventListener("click", function() {
-  preview.style.display = "none";
-  fileInput.value = "";
-  currentFile = null;
-  localStorage.removeItem(IMG_CACHE_KEY);
-  localStorage.removeItem(RESULT_CACHE_KEY);
-  result.innerHTML = `
-    <p><span class="cn">等待上传影像...</span></p>
-    <p class="tip"><span class="kr">영상 업로드를 기다리는 중...</span></p>
-  `;
-});
-
-analyzeBtn.addEventListener("click", function() {
-  const cacheImg = localStorage.getItem(IMG_CACHE_KEY);
-  if (!currentFile && !cacheImg) {
-    alert("请先上传X光影像文件!\n먼저 X선 영상을 업로드해 주세요!");
+// 分析
+analyzeBtn.addEventListener("click", function(){
+  if(!localStorage.getItem(IMG_KEY)){
+    alert("请先上传X光影像!\n먼저 X선 영상을 업로드해 주세요!");
     return;
   }
-
   analyzeBtn.disabled = true;
   result.innerHTML = `
     <div class="loading">
@@ -516,55 +490,63 @@ analyzeBtn.addEventListener("click", function() {
     </div>
   `;
 
-  setTimeout(() => {
-    const confidence = Math.floor(90 + Math.random() * 9);
-    const analysisHTML = `
+  setTimeout(()=>{
+    let rate = Math.floor(90 + Math.random() * 9);
+    let html = `
       <div class="result-item">
         <h3><span class="cn">✅ 检测完成</span></h3>
         <p class="tip"><span class="kr">✅ 검사 완료</span></p>
-
         <p><span class="cn">检测结果：疑似桡骨远端骨折</span> <span class="kr">검사 결과: 요골 원위부 골절 의심</span></p>
         <p><span class="cn">严重程度：中度</span> <span class="kr">심각도: 중등도</span></p>
         <p><span class="cn">诊疗建议：进一步CT检查</span> <span class="kr">진단 권장: CT 추가 검사</span></p>
-        <p><span class="cn">识别置信度：${confidence}%</span> <span class="kr">인식 신뢰도: ${confidence}%</span></p>
-
+        <p><span class="cn">识别置信度：${rate}%</span> <span class="kr">인식 신뢰도: ${rate}%</span></p>
         <div class="progress">
-          <div class="progress-bar" style="width:${confidence}%"></div>
+          <div class="progress-bar" style="width:${rate}%"></div>
         </div>
       </div>
-
       <div class="result-item">
         <p><span class="cn"><strong>诊断建议：</strong>建议前往正规骨科门诊做进一步影像学检查，结合临床体征确诊。</span></p>
         <p class="tip"><span class="kr"><strong>진단 제안:</strong> 정형외과에서 추가 영상 검사를 받고 임상 증상과 함께 확진하세요.</span></p>
       </div>
-
       <div class="result-item">
         <p><span class="cn"><strong>生成时间：</strong>${new Date().toLocaleString()}</span></p>
         <p class="tip"><span class="kr"><strong>생성 시간：</strong>${new Date().toLocaleString()}</span></p>
       </div>
     `;
-    
-    result.innerHTML = analysisHTML;
-    // 保存分析结果到本地缓存
-    localStorage.setItem(RESULT_CACHE_KEY, analysisHTML);
+    // 保存分析结果
+    localStorage.setItem(RES_KEY, html);
+    result.innerHTML = html;
     analyzeBtn.disabled = false;
-  }, 2500);
+  },2500);
 });
 
-loginBtn.addEventListener("click", function() {
-  const user = username.value.trim();
-  const pwdVal = pwd.value.trim();
-  if (user === "") {
+// 重置：清空所有缓存
+resetBtn.addEventListener("click", function(){
+  preview.style.display = "none";
+  fileInput.value = "";
+  localStorage.removeItem(IMG_KEY);
+  localStorage.removeItem(RES_KEY);
+  result.innerHTML = `
+    <p><span class="cn">等待上传影像...</span></p>
+    <p class="tip"><span class="kr">영상 업로드를 기다리는 중...</span></p>
+  `;
+});
+
+// 登录
+loginBtn.addEventListener("click", function(){
+  let u = username.value.trim();
+  let p = pwd.value.trim();
+  if(!u){
     alert("请输入用户名!\n사용자 이름을 입력해 주세요!");
     username.focus();
     return;
   }
-  if (pwdVal === "") {
+  if(!p){
     alert("请输入密码!\n비밀번호를 입력해 주세요!");
     pwd.focus();
     return;
   }
-  alert(`登录成功！欢迎 ${user}\n로그인 성공! ${user}님 환영합니다`);
+  alert(`登录成功！欢迎 ${u}\n로그인 성공! ${u}님 환영합니다`);
 });
 </script>
 </body>
