@@ -432,7 +432,7 @@ const username = document.getElementById("username");
 const pwd = document.getElementById("pwd");
 
 let currentFile = null;
-// 缓存Key，实现图片和分析结果永久保存
+// 本地存储Key，永久保存图片和分析结果
 const IMG_CACHE_KEY = "bone_ai_upload_img";
 const RESULT_CACHE_KEY = "bone_ai_analysis_result";
 
@@ -472,10 +472,11 @@ fileInput.addEventListener("change", function(e) {
     return;
   }
 
+  // 使用FileReader读取文件并转为Base64，存入localStorage
   const reader = new FileReader();
   reader.onload = function(e) {
     const imgUrl = e.target.result;
-    preview.src = cachedImgUrl;
+    preview.src = imgUrl;
     preview.style.display = "block";
     localStorage.setItem(IMG_CACHE_KEY, imgUrl);
     localStorage.removeItem(RESULT_CACHE_KEY);
