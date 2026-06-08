@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>骨影智析 AI V4.0</title>
+
+<title>骨影智析 AI V5.0</title>
 
 <style>
 
@@ -62,6 +63,33 @@ background:#1e293b;
 padding:20px;
 border-radius:15px;
 box-shadow:0 4px 10px rgba(0,0,0,.2);
+}
+
+.welcome-box{
+text-align:center;
+padding:30px;
+background:#111827;
+border-radius:15px;
+margin-bottom:20px;
+border:1px solid #334155;
+}
+
+.welcome-box h1{
+color:#60a5fa;
+margin-bottom:10px;
+}
+
+.welcome-box h3{
+color:#cbd5e1;
+font-weight:normal;
+margin-bottom:15px;
+}
+
+.student-info{
+font-size:20px;
+font-weight:bold;
+color:#22c55e;
+line-height:1.8;
 }
 
 .card h2{
@@ -153,7 +181,7 @@ padding:10px;
 margin-top:10px;
 background:#0f172a;
 border:1px solid #334155;
-color:#fff;
+color:white;
 border-radius:8px;
 }
 
@@ -189,6 +217,7 @@ gap:10px;
 }
 
 </style>
+
 </head>
 
 <body>
@@ -214,6 +243,28 @@ gap:10px;
 <div class="container">
 
 <div>
+
+<div class="welcome-box">
+
+<h1>
+欢迎使用骨影智析 AI
+</h1>
+
+<h3>
+골 영상 AI 분석 시스템
+</h3>
+
+<div class="student-info">
+
+전시옥
+
+<br>
+
+202217019
+
+</div>
+
+</div>
 
 <div class="card">
 
@@ -274,9 +325,7 @@ class="reset-btn">
 
 </div>
 
-</div>
-
-<div
+</div><div
 class="card"
 style="margin-top:20px">
 
@@ -335,7 +384,13 @@ style="margin-top:20px">
 </div>
 
 <footer>
-Bone Vision AI V4.0
+
+Bone Vision AI V5.0
+
+<br>
+
+전시옥 | 202217019
+
 </footer>
 
 <script>
@@ -471,6 +526,8 @@ base64
 result.innerHTML = `
 <div class="result-item">
 图片上传成功
+<br>
+点击开始分析
 </div>
 `;
 
@@ -515,7 +572,10 @@ div
 );
 
 });
-}analyzeBtn.addEventListener(
+
+}
+
+analyzeBtn.addEventListener(
 "click",
 function(){
 
@@ -588,20 +648,13 @@ width:${confidence}%;
 </div>
 
 <div class="result-item">
-
 诊断建议：
-
 建议前往正规骨科进一步检查。
-
 </div>
 
 <div class="result-item">
-
 生成时间：
-
-${new Date()
-.toLocaleString()}
-
+${new Date().toLocaleString()}
 </div>
 
 `;
@@ -622,12 +675,8 @@ HISTORY_KEY
 );
 
 history.unshift(
-
 "骨折分析 - " +
-
-new Date()
-.toLocaleString()
-
+new Date().toLocaleString()
 );
 
 history =
@@ -721,6 +770,7 @@ alert(
 );
 
 return;
+
 }
 
 if(!pass){
@@ -730,12 +780,13 @@ alert(
 );
 
 return;
+
 }
 
 alert(
 "欢迎 " +
 user +
-" 登录骨影智析AI"
+" 使用骨影智析AI"
 );
 
 }
@@ -746,4 +797,3 @@ user +
 </body>
 
 </html>
-
